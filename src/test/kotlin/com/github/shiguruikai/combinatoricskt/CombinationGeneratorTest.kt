@@ -1,0 +1,96 @@
+package com.github.shiguruikai.combinatoricskt
+
+import org.junit.jupiter.api.Assertions.assertArrayEquals
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertIterableEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import java.util.*
+import kotlin.coroutines.experimental.buildSequence
+
+internal class CombinationGeneratorTest {
+
+    private val emptyList = emptyList<Any>()
+    private val emptyArray = emptyArray<Any>()
+
+    @Test
+    fun test_combinations_empty() {
+        assertEquals("[[]]", emptyList.combinations(0).toList().toString())
+        assertEquals("[]", emptyList.combinations(100).toList().toString())
+        assertIterableEquals(listOf(emptyList), emptyList.combinations(0).toList())
+        assertIterableEquals(emptyList, emptyList.combinations(100).toList())
+
+        assertEquals("[[]]", emptyArray.combinations(0).toList().map { it.toList() }.toString())
+        assertEquals("[]", emptyArray.combinations(100).toList().map { it.toList() }.toString())
+        assertArrayEquals(arrayOf(emptyArray), emptyArray.combinations(0).toList().toTypedArray())
+        assertArrayEquals(emptyArray, emptyArray.combinations(100).toList().toTypedArray())
+    }
+
+    @Test
+    fun test_combinations_exception() {
+        assertThrows<IllegalArgumentException> { ('a'..'c').combinations(-1) }
+        assertThrows<IllegalArgumentException> { emptyList.combinations(-1) }
+    }
+
+    @Test
+    fun test_combinations() {
+        assertEquals(
+                "[[]]",
+                (0..2).combinations(0).toList().toString())
+        assertEquals(
+                "[[0], [1], [2]]",
+                (0..2).combinations(1).toList().toString())
+        assertEquals(
+                "[[0, 1], [0, 2], [1, 2]]",
+                (0..2).combinations(2).toList().toString())
+        assertEquals(
+                "[[0, 1, 2]]",
+                (0..2).combinations(3).toList().toString())
+        assertEquals(
+                "[]",
+                (0..2).combinations(4).toList().toString())
+
+        // combinations() は permutations() のシーケンスから、
+        // 要素が（入力プールの位置に応じた順序で）ソート順になっていない項目をフィルタリングしたものと同じ
+        fun <T> Iterable<T>.combinations2(length: Int): Sequence<List<T>> = buildSequence {
+            val pool = toList()
+            pool.indices.permutations(length)
+                    .filter { it.sorted() == it }
+                    .forEach { yield(it.map { pool[it] }) }
+        }
+
+        fun <T> Iterable<T>.combinations3(length: Int): Sequence<List<T>> = buildSequence {
+            val pool = toList()
+            pool.indices.combinationsWithRepetition(length)
+                    .filter { it.toSet().size == length }
+                    .forEach { yield(it.map { pool[it] }) }
+        }
+
+        val comparator = Comparator<List<Int>> { o1, o2 -> Arrays.compare(o1.toTypedArray(), o2.toTypedArray()) }
+
+        for (n in 0 until 7) {
+            val values = (0 until n).map { 5 * it - 12 }
+            for (r in 0 until n + 1) {
+                val result = values.combinations(r).toList()
+
+                assertEquals(result, values.toTypedArray().combinations(r).toList().map { it.toList() })
+
+                assertEquals(result.count(), if (r > n) 0 else combinations(n, r).intValueExact())
+                assertEquals(result.count(), result.toSet().count())
+                assertEquals(result, result.sortedWith(comparator))
+
+                for (c in result) {
+                    assertEquals(c.count(), r)
+                    assertEquals(c.toSet().count(), r)
+                    assertEquals(c, c.sorted())
+                    assertTrue(c.all { it in values })
+                    assertEquals(c, values.filter { it in c })
+                }
+
+                assertEquals(result, values.combinations2(r).toList())
+                assertEquals(result, values.combinations3(r).toList())
+            }
+        }
+    }
+}
