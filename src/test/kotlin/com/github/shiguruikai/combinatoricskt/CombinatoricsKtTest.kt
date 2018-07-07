@@ -57,6 +57,11 @@ internal class CombinatoricsKtTest {
                     val size = (n * n).toBigInteger()
                     assertTrue(it.count().toBigInteger() == size && size == it.totalSize)
                 }
+
+                values.powerset().let {
+                    val size = BigInteger.TWO.pow(n)
+                    assertTrue(it.count().toBigInteger() == size && size == it.totalSize)
+                }
             }
         }
     }
@@ -130,5 +135,6 @@ internal class CombinatoricsKtTest {
         range.combinationsWithRepetition(n).testReuse()
         range.cartesianProduct().testReuse()
         range.cartesianProduct(range).testReuse()
+        range.powerset().testReuse()
     }
 }

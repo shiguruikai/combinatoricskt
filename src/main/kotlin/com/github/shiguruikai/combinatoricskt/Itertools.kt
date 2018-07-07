@@ -23,6 +23,9 @@ fun <T> Iterable<T>.cartesianProduct(): CombinatorialSequence<List<T>> =
 fun <T> Iterable<T>.cartesianProduct(vararg others: Iterable<T>): CombinatorialSequence<List<T>> =
         CartesianProductGenerator.generate(this, *others)
 
+fun <T> Iterable<T>.powerset(): CombinatorialSequence<List<T>> =
+        PowerSetGenerator.generate(this)
+
 inline fun <reified T> Array<T>.permutations(length: Int? = null): CombinatorialSequence<Array<T>> =
         PermutationGenerator.generate(this, length)
 
@@ -43,3 +46,6 @@ inline fun <reified T> Array<T>.cartesianProduct(): CombinatorialSequence<Array<
 
 inline fun <reified T> Array<T>.cartesianProduct(vararg others: Array<T>): CombinatorialSequence<Array<T>> =
         CartesianProductGenerator.generate(this, *others)
+
+inline fun <reified T> Array<T>.powerset(): CombinatorialSequence<Array<T>> =
+        PowerSetGenerator.generate(this)
