@@ -37,55 +37,19 @@ object PermutationWithRepetitionGenerator {
     }
 
     @JvmStatic
-    fun <T> generate(vararg iterables: Iterable<T>, length: Int): CombinatorialSequence<List<T>> {
+    fun <T> generate(iterable: Iterable<T>, length: Int): CombinatorialSequence<List<T>> {
         require(length >= 0) { "length argument cannot be negative" }
         if (length == 0) return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyList()))
-        if (iterables.isEmpty()) return CombinatorialSequence(BigInteger.ZERO, emptySequence())
 
-        if (iterables.size == 1) {
-            val pool = iterables[0].toList()
-            return build(pool.size, length) { it.map { pool[it] } }
-        } else {
-            var total = BigInteger.ONE
-            val pools = iterables.map { it.toList().also { total *= it.size.toBigInteger() }.asSequence() } * length
-            total = total.pow(length)
-
-            if (total == BigInteger.ZERO) {
-                return CombinatorialSequence(BigInteger.ZERO, emptySequence())
-            }
-
-            var sequence = sequenceOf(emptyList<T>())
-            pools.forEach { pool ->
-                sequence = sequence.flatMap { a -> pool.map { b -> a + b } }
-            }
-
-            return CombinatorialSequence(total, sequence)
-        }
+        val pool = iterable.toList()
+        return build(pool.size, length) { it.map { pool[it] } }
     }
 
-    inline fun <reified T> generate(vararg arrays: Array<T>, length: Int): CombinatorialSequence<Array<T>> {
+    inline fun <reified T> generate(array: Array<T>, length: Int): CombinatorialSequence<Array<T>> {
         require(length >= 0) { "length argument cannot be negative" }
         if (length == 0) return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyArray()))
-        if (arrays.isEmpty()) return CombinatorialSequence(BigInteger.ZERO, emptySequence())
 
-        if (arrays.size == 1) {
-            val pool = arrays[0].copyOf()
-            return build(pool.size, length) { it.mapToArray { pool[it] } }
-        } else {
-            var total = BigInteger.ONE
-            val pools = arrays.map { total *= it.size.toBigInteger(); it.copyOf().asSequence() } * length
-            total = total.pow(length)
-
-            if (total == BigInteger.ZERO) {
-                return CombinatorialSequence(BigInteger.ZERO, emptySequence())
-            }
-
-            var sequence = sequenceOf(emptyArray<T>())
-            pools.forEach { pool ->
-                sequence = sequence.flatMap { a -> pool.map { b -> a + b } }
-            }
-
-            return CombinatorialSequence(total, sequence)
-        }
+        val pool = array.copyOf()
+        return build(pool.size, length) { it.mapToArray { pool[it] } }
     }
 }

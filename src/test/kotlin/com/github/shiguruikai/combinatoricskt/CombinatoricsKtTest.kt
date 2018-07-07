@@ -24,11 +24,6 @@ internal class CombinatoricsKtTest {
                     assertTrue(it.count().toBigInteger() == size && size == it.totalSize)
                 }
 
-                values.permutationsWithRepetition(values, length = r).let {
-                    val size = (n * n).toBigInteger().pow(r)
-                    assertTrue(it.count().toBigInteger() == size && size == it.totalSize)
-                }
-
                 values.permutations(r).let {
                     val size = if (n >= 0 && r >= 0 && n >= r) permutations(n, r) else BigInteger.ZERO
                     assertTrue(it.count().toBigInteger() == size && size == it.totalSize)
@@ -55,6 +50,11 @@ internal class CombinatoricsKtTest {
 
                 values.cartesianProduct(values).let {
                     val size = (n * n).toBigInteger()
+                    assertTrue(it.count().toBigInteger() == size && size == it.totalSize)
+                }
+
+                values.cartesianProduct(values, repeat = r).let {
+                    val size = (n * n).toBigInteger().pow(r)
                     assertTrue(it.count().toBigInteger() == size && size == it.totalSize)
                 }
 
@@ -130,11 +130,12 @@ internal class CombinatoricsKtTest {
 
         range.permutations(n).testReuse()
         range.permutationsWithRepetition(n).testReuse()
-        range.permutationsWithRepetition(range, length = n).testReuse()
+        range.permutationsWithRepetition(n).testReuse()
         range.combinations(n).testReuse()
         range.combinationsWithRepetition(n).testReuse()
         range.cartesianProduct().testReuse()
         range.cartesianProduct(range).testReuse()
+        range.cartesianProduct(range, repeat = n).testReuse()
         range.powerset().testReuse()
     }
 }
