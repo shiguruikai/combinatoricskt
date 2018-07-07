@@ -6,30 +6,36 @@ import kotlin.coroutines.experimental.buildIterator
 object PermutationGenerator {
 
     @PublishedApi
-    internal inline fun <R> build(n: Int, r: Int, crossinline block: (IntArray) -> R): Iterator<R> = buildIterator {
-        val indices = IntArray(n) { it }
-        val cycles = IntArray(r) { n - it }
-        loop@ while (true) {
-            yield(block(indices))
-            for (i in r - 1 downTo 0) {
-                cycles[i]--
-                if (cycles[i] == 0) {
-                    val first = indices[i]
-                    for (j in i until n - 1) {
-                        indices[j] = indices[j + 1]
+    internal inline fun <R> build(n: Int, r: Int, crossinline block: (IntArray) -> R): CombinatorialSequence<R> {
+        val totalSize = permutations(n, r)
+
+        val iterator = buildIterator {
+            val indices = IntArray(n) { it }
+            val cycles = IntArray(r) { n - it }
+            loop@ while (true) {
+                yield(block(indices))
+                for (i in r - 1 downTo 0) {
+                    cycles[i]--
+                    if (cycles[i] == 0) {
+                        val first = indices[i]
+                        for (j in i until n - 1) {
+                            indices[j] = indices[j + 1]
+                        }
+                        indices[n - 1] = first
+                        cycles[i] = n - i
+                    } else {
+                        val j = n - cycles[i]
+                        val tmp = indices[i]
+                        indices[i] = indices[j]
+                        indices[j] = tmp
+                        continue@loop
                     }
-                    indices[n - 1] = first
-                    cycles[i] = n - i
-                } else {
-                    val j = n - cycles[i]
-                    val tmp = indices[i]
-                    indices[i] = indices[j]
-                    indices[j] = tmp
-                    continue@loop
                 }
+                break
             }
-            break
         }
+
+        return CombinatorialSequence(totalSize, iterator)
     }
 
     @JvmStatic
@@ -48,8 +54,7 @@ object PermutationGenerator {
             return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyList()))
         }
 
-        val total = permutations(n, r)
-        return CombinatorialSequence(total, build(n, r) { indices -> indices.mapToList(r) { pool[it] } })
+        return build(n, r) { indices -> indices.mapToList(r) { pool[it] } }
     }
 
     inline fun <reified T> generate(array: Array<T>, length: Int? = null): CombinatorialSequence<Array<T>> {
@@ -67,7 +72,6 @@ object PermutationGenerator {
             return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyArray()))
         }
 
-        val total = permutations(n, r)
-        return CombinatorialSequence(total, build(n, r) { indices -> indices.mapToArray(r) { pool[it] } })
+        return build(n, r) { indices -> indices.mapToArray(r) { pool[it] } }
     }
 }

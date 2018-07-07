@@ -6,21 +6,28 @@ import kotlin.coroutines.experimental.buildIterator
 object CombinationWithRepetitionGenerator {
 
     @PublishedApi
-    internal inline fun <R> build(n: Int, r: Int, crossinline block: (IntArray) -> R): Iterator<R> = buildIterator {
-        val indices = IntArray(r)
-        loop@ while (true) {
-            yield(block(indices))
-            for (i in r - 1 downTo 0) {
-                if (indices[i] != n - 1) {
-                    indices[i]++
-                    for (j in i + 1 until r) {
-                        indices[j] = indices[i]
+    internal inline fun <R> build(n: Int, r: Int,
+                                  crossinline block: (IntArray) -> R): CombinatorialSequence<R> {
+        val totalSize = combinationsWithRepetition(n, r)
+
+        val iterator = buildIterator {
+            val indices = IntArray(r)
+            loop@ while (true) {
+                yield(block(indices))
+                for (i in r - 1 downTo 0) {
+                    if (indices[i] != n - 1) {
+                        indices[i]++
+                        for (j in i + 1 until r) {
+                            indices[j] = indices[i]
+                        }
+                        continue@loop
                     }
-                    continue@loop
                 }
+                break
             }
-            break
         }
+
+        return CombinatorialSequence(totalSize, iterator)
     }
 
     @JvmStatic
@@ -30,11 +37,12 @@ object CombinationWithRepetitionGenerator {
 
         val pool = iterable.toList()
         val n = pool.size
+
         if (n == 0) {
             return CombinatorialSequence(BigInteger.ZERO, emptySequence())
         }
-        val total = combinationsWithRepetition(n, length)
-        return CombinatorialSequence(total, build(n, length) { it.map { pool[it] } })
+
+        return build(n, length) { it.map { pool[it] } }
     }
 
     inline fun <reified T> generate(array: Array<T>, length: Int): CombinatorialSequence<Array<T>> {
@@ -43,10 +51,11 @@ object CombinationWithRepetitionGenerator {
 
         val pool = array.copyOf()
         val n = pool.size
+
         if (n == 0) {
             return CombinatorialSequence(BigInteger.ZERO, emptySequence())
         }
-        val total = combinationsWithRepetition(n, length)
-        return CombinatorialSequence(total, build(n, length) { it.mapToArray { pool[it] } })
+
+        return build(n, length) { it.mapToArray { pool[it] } }
     }
 }

@@ -7,20 +7,33 @@ object PermutationWithRepetitionGenerator {
 
     @PublishedApi
     internal inline fun <R> build(n: Int, r: Int,
-                                  crossinline condition: () -> Boolean,
-                                  crossinline block: (IntArray) -> R): Iterator<R> = buildIterator {
-        val indices = IntArray(r)
-        while (condition()) {
-            yield(block(indices))
-            for (i in r - 1 downTo 0) {
-                if (indices[i] >= n - 1) {
-                    indices[i] = 0
-                } else {
-                    indices[i]++
-                    break
+                                  crossinline block: (IntArray) -> R): CombinatorialSequence<R> {
+        val totalSize = n.toBigInteger().pow(r)
+
+        val condition = try {
+            var t = totalSize.longValueExact();
+            { t-- > 0 }
+        } catch (e: ArithmeticException) {
+            var t = totalSize;
+            { t-- > BigInteger.ZERO }
+        }
+
+        val iterator = buildIterator {
+            val indices = IntArray(r)
+            while (condition()) {
+                yield(block(indices))
+                for (i in r - 1 downTo 0) {
+                    if (indices[i] >= n - 1) {
+                        indices[i] = 0
+                    } else {
+                        indices[i]++
+                        break
+                    }
                 }
             }
         }
+
+        return CombinatorialSequence(totalSize, iterator)
     }
 
     @JvmStatic
@@ -31,18 +44,7 @@ object PermutationWithRepetitionGenerator {
 
         if (iterables.size == 1) {
             val pool = iterables[0].toList()
-            val n = pool.size
-            val total = n.toBigInteger().pow(length)
-
-            val condition = if (total <= Long.MAX_VALUE.toBigInteger()) {
-                var t = total.longValueExact();
-                { t-- > 0 }
-            } else {
-                var t = total;
-                { t-- > BigInteger.ZERO }
-            }
-
-            return CombinatorialSequence(total, build(n, length, condition) { it.map { pool[it] } })
+            return build(pool.size, length) { it.map { pool[it] } }
         } else {
             var total = BigInteger.ONE
             val pools = iterables.map { it.toList().also { total *= it.size.toBigInteger() }.asSequence() } * length
@@ -68,18 +70,7 @@ object PermutationWithRepetitionGenerator {
 
         if (arrays.size == 1) {
             val pool = arrays[0].copyOf()
-            val n = pool.size
-            val total = n.toBigInteger().pow(length)
-
-            val condition = if (total <= Long.MAX_VALUE.toBigInteger()) {
-                var t = total.longValueExact();
-                { t-- > 0 }
-            } else {
-                var t = total;
-                { t-- > BigInteger.ZERO }
-            }
-
-            return CombinatorialSequence(total, build(n, length, condition) { it.mapToArray { pool[it] } })
+            return build(pool.size, length) { it.mapToArray { pool[it] } }
         } else {
             var total = BigInteger.ONE
             val pools = arrays.map { total *= it.size.toBigInteger(); it.copyOf().asSequence() } * length

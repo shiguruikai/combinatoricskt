@@ -6,21 +6,27 @@ import kotlin.coroutines.experimental.buildIterator
 object CombinationGenerator {
 
     @PublishedApi
-    internal inline fun <R> build(n: Int, r: Int, crossinline block: (IntArray) -> R): Iterator<R> = buildIterator {
-        val indices = IntArray(r) { it }
-        loop@ while (true) {
-            yield(block(indices))
-            for (i in r - 1 downTo 0) {
-                if (indices[i] != i + n - r) {
-                    indices[i]++
-                    for (j in i + 1 until r) {
-                        indices[j] = indices[j - 1] + 1
+    internal inline fun <R> build(n: Int, r: Int, crossinline block: (IntArray) -> R): CombinatorialSequence<R> {
+        val totalSize = combinations(n, r)
+
+        val iterator = buildIterator {
+            val indices = IntArray(r) { it }
+            loop@ while (true) {
+                yield(block(indices))
+                for (i in r - 1 downTo 0) {
+                    if (indices[i] != i + n - r) {
+                        indices[i]++
+                        for (j in i + 1 until r) {
+                            indices[j] = indices[j - 1] + 1
+                        }
+                        continue@loop
                     }
-                    continue@loop
                 }
+                break
             }
-            break
         }
+
+        return CombinatorialSequence(totalSize, iterator)
     }
 
     fun <T> generate(iterable: Iterable<T>, length: Int): CombinatorialSequence<List<T>> {
@@ -34,8 +40,7 @@ object CombinationGenerator {
             return CombinatorialSequence(BigInteger.ZERO, emptySequence())
         }
 
-        val total = combinations(n, length)
-        return CombinatorialSequence(total, build(n, length) { it.map { pool[it] } })
+        return build(n, length) { it.map { pool[it] } }
     }
 
     inline fun <reified T> generate(array: Array<T>, length: Int): CombinatorialSequence<Array<T>> {
@@ -49,7 +54,6 @@ object CombinationGenerator {
             return CombinatorialSequence(BigInteger.ZERO, emptySequence())
         }
 
-        val total = combinations(n, length)
-        return CombinatorialSequence(total, build(n, length) { it.mapToArray { pool[it] } })
+        return build(n, length) { it.mapToArray { pool[it] } }
     }
 }
