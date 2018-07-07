@@ -24,7 +24,7 @@ repositories {
 }
  
 dependencies {
-    implementation 'com.github.shiguruikai:combinatoricskt:0.3.0'
+    implementation 'com.github.shiguruikai:combinatoricskt:0.4.0'
 }
 ```
 
@@ -37,15 +37,11 @@ fun <T> Iterable<T>.permutations(length: Int? = null): CombinatorialSequence<Lis
 
 fun <T> Iterable<T>.permutationsWithRepetition(length: Int): CombinatorialSequence<List<T>>
 
-fun <T> Iterable<T>.permutationsWithRepetition(vararg others: Iterable<T>, length: Int): CombinatorialSequence<List<T>>
-
 fun <T> Iterable<T>.combinations(length: Int): CombinatorialSequence<List<T>>
 
 fun <T> Iterable<T>.combinationsWithRepetition(length: Int): CombinatorialSequence<List<T>>
 
-fun <T> Iterable<T>.cartesianProduct(): CombinatorialSequence<List<T>>
-
-fun <T> Iterable<T>.cartesianProduct(vararg others: Iterable<T>): CombinatorialSequence<List<T>>
+fun <T> Iterable<T>.cartesianProduct(vararg others: Iterable<T>, repeat: Int = 1): CombinatorialSequence<List<T>>
 
 fun <T> Iterable<T>.powerset(): CombinatorialSequence<List<T>>
 ```
@@ -57,15 +53,11 @@ inline fun <reified T> Array<T>.permutations(length: Int? = null): Combinatorial
 
 inline fun <reified T> Array<T>.permutationsWithRepetition(length: Int): CombinatorialSequence<Array<T>>
 
-inline fun <reified T> Array<T>.permutationsWithRepetition(vararg others: Array<T>, length: Int): CombinatorialSequence<Array<T>>
-
 inline fun <reified T> Array<T>.combinations(length: Int): CombinatorialSequence<Array<T>>
 
 inline fun <reified T> Array<T>.combinationsWithRepetition(length: Int): CombinatorialSequence<Array<T>>
 
-inline fun <reified T> Array<T>.cartesianProduct(): CombinatorialSequence<Array<T>>
-
-inline fun <reified T> Array<T>.cartesianProduct(vararg others: Array<T>): CombinatorialSequence<Array<T>>
+inline fun <reified T> Array<T>.cartesianProduct(vararg others: Array<T>, repeat: Int = 1): CombinatorialSequence<Array<T>>
 
 inline fun <reified T> Array<T>.powerset(): CombinatorialSequence<Array<T>>
 ```
