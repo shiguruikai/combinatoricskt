@@ -12,10 +12,11 @@ Iterable または Array から以下のシーケンスを生成する。
 - Combinations （組合せ）
 - Combinations With Repetition （重複組合せ）
 - Cartesian Product （デカルト積）
+- Power Set （冪集合）
 
 ## Download
 
-Add the following to `build.gradle`
+Add the following to `build.gradle` file:
 
 ```gradle 
 repositories {
@@ -45,6 +46,8 @@ fun <T> Iterable<T>.combinationsWithRepetition(length: Int): CombinatorialSequen
 fun <T> Iterable<T>.cartesianProduct(): CombinatorialSequence<List<T>>
 
 fun <T> Iterable<T>.cartesianProduct(vararg others: Iterable<T>): CombinatorialSequence<List<T>>
+
+fun <T> Iterable<T>.powerset(): CombinatorialSequence<List<T>>
 ```
 
 Array:
@@ -63,4 +66,6 @@ inline fun <reified T> Array<T>.combinationsWithRepetition(length: Int): Combina
 inline fun <reified T> Array<T>.cartesianProduct(): CombinatorialSequence<Array<T>>
 
 inline fun <reified T> Array<T>.cartesianProduct(vararg others: Array<T>): CombinatorialSequence<Array<T>>
+
+inline fun <reified T> Array<T>.powerset(): CombinatorialSequence<Array<T>>
 ```
