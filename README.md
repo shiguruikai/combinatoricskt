@@ -61,3 +61,84 @@ inline fun <reified T> Array<T>.cartesianProduct(vararg others: Array<T>, repeat
 
 inline fun <reified T> Array<T>.powerset(): CombinatorialSequence<Array<T>>
 ```
+
+## Permutations （順列）
+
+```kotlin 
+(1..3).permutations().toList()
+// [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
+
+(1..3).permutations(1).toList()
+// [[1], [2], [3]]
+
+(1..3).permutations(2).toList()
+// [[1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2]]
+
+(1..3).permutations(3).toList()
+// [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
+```
+
+## Permutations With Repetition （重複順列）
+
+```kotlin 
+(1..3).permutationsWithRepetition(1).toList()
+// [[1], [2], [3]]
+
+(1..3).permutationsWithRepetition(2).toList()
+// [[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]]
+
+(1..3).permutationsWithRepetition(3).toList()
+// [[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2], [1, 3, 3], [2, 1, 1], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 2], [2, 2, 3], [2, 3, 1], [2, 3, 2], [2, 3, 3], [3, 1, 1], [3, 1, 2], [3, 1, 3], [3, 2, 1], [3, 2, 2], [3, 2, 3], [3, 3, 1], [3, 3, 2], [3, 3, 3]]
+```
+
+## Combinations （組合せ）
+
+```kotlin 
+(1..3).combinations(1).toList()
+/// [[1], [2], [3]]
+
+(1..3).combinations(2).toList()
+// [[1, 2], [1, 3], [2, 3]]
+
+(1..3).combinations(3).toList()
+// [[1, 2, 3]]
+```
+
+## Combinations With Repetition （重複組合せ）
+
+```kotlin 
+(1..3).combinationsWithRepetition(1).toList()
+// [[1], [2], [3]]
+
+(1..3).combinationsWithRepetition(2).toList()
+// [[1, 1], [1, 2], [1, 3], [2, 2], [2, 3], [3, 3]]
+
+(1..3).combinationsWithRepetition(3).toList()
+// [[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 2], [1, 2, 3], [1, 3, 3], [2, 2, 2], [2, 2, 3], [2, 3, 3], [3, 3, 3]]
+```
+
+## Cartesian Product （デカルト積）
+
+```kotlin 
+(1..3).cartesianProduct(repeat = 1).toList()
+// [[1], [2], [3]]
+
+(1..3).cartesianProduct(repeat = 2).toList()
+// [[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]]
+
+(0..1).cartesianProduct('a'..'b').toList()
+// [[0, a], [0, b], [1, a], [1, b]]
+
+(0..1).cartesianProduct('a'..'b', listOf('x')).toList()
+// [[0, a, x], [0, b, x], [1, a, x], [1, b, x]]
+
+(0..1).cartesianProduct('a'..'b', repeat = 2).toList()
+// [[0, a, 0, a], [0, a, 0, b], [0, a, 1, a], [0, a, 1, b], [0, b, 0, a], [0, b, 0, b], [0, b, 1, a], [0, b, 1, b], [1, a, 0, a], [1, a, 0, b], [1, a, 1, a], [1, a, 1, b], [1, b, 0, a], [1, b, 0, b], [1, b, 1, a], [1, b, 1, b]]
+
+```
+## Power Set （冪集合）
+
+```kotlin 
+(1..3).powerset().toList()
+// [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
+```
