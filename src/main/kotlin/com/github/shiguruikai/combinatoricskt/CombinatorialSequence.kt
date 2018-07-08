@@ -11,11 +11,7 @@ class CombinatorialSequence<T>(val totalSize: BigInteger,
 
     constructor(size: BigInteger, iterator: Iterator<T>) : this(size, iterator.asSequence())
 
-    fun toList(): List<T> = if (totalSize <= MAX_ARRAY_SIZE) {
-        toCollection(ArrayList(totalSize.intValueExact()))
-    } else {
-        toCollection(LinkedList())
-    }
+    fun toList(): List<T> = toMutableList()
 
     fun toMutableList(): MutableList<T> = if (totalSize <= MAX_ARRAY_SIZE) {
         toCollection(ArrayList(totalSize.intValueExact()))
