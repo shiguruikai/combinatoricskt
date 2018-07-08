@@ -31,7 +31,10 @@ object CombinationGenerator {
 
     fun <T> generate(iterable: Iterable<T>, length: Int): CombinatorialSequence<List<T>> {
         require(length >= 0) { "length must be non-negative" }
-        if (length == 0) return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyList()))
+
+        if (length == 0) {
+            return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyList()))
+        }
 
         val pool = iterable.toList()
         val n = pool.size
@@ -45,7 +48,10 @@ object CombinationGenerator {
 
     inline fun <reified T> generate(array: Array<T>, length: Int): CombinatorialSequence<Array<T>> {
         require(length >= 0) { "length must be non-negative" }
-        if (length == 0) return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyArray()))
+
+        if (length == 0) {
+            return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyArray()))
+        }
 
         val pool = array.copyOf()
         val n = pool.size
