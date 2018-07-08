@@ -29,6 +29,7 @@ object CombinationGenerator {
         return CombinatorialSequence(totalSize, iterator)
     }
 
+    @JvmStatic
     fun <T> generate(iterable: Iterable<T>, length: Int): CombinatorialSequence<List<T>> {
         require(length >= 0) { "length must be non-negative" }
 
