@@ -38,7 +38,7 @@ object PermutationWithRepetitionGenerator {
 
     @JvmStatic
     fun <T> generate(iterable: Iterable<T>, length: Int): CombinatorialSequence<List<T>> {
-        require(length >= 0) { "length argument cannot be negative" }
+        require(length >= 0) { "length must be non-negative, was $length" }
 
         if (length == 0) {
             return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyList()))
@@ -49,8 +49,11 @@ object PermutationWithRepetitionGenerator {
     }
 
     inline fun <reified T> generate(array: Array<T>, length: Int): CombinatorialSequence<Array<T>> {
-        require(length >= 0) { "length argument cannot be negative" }
-        if (length == 0) return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyArray()))
+        require(length >= 0) { "length must be non-negative, was $length" }
+
+        if (length == 0) {
+            return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyArray()))
+        }
 
         val pool = array.copyOf()
         return build(pool.size, length) { it.mapToArray { pool[it] } }

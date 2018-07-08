@@ -32,7 +32,7 @@ object CombinationWithRepetitionGenerator {
 
     @JvmStatic
     fun <T> generate(iterable: Iterable<T>, length: Int): CombinatorialSequence<List<T>> {
-        require(length >= 0) { "length must be non-negative" }
+        require(length >= 0) { "length must be non-negative, was $length" }
 
         if (length == 0) {
             return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyList()))
@@ -49,7 +49,7 @@ object CombinationWithRepetitionGenerator {
     }
 
     inline fun <reified T> generate(array: Array<T>, length: Int): CombinatorialSequence<Array<T>> {
-        require(length >= 0) { "length must be non-negative" }
+        require(length >= 0) { "length must be non-negative, was $length" }
 
         if (length == 0) {
             return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyArray()))

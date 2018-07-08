@@ -6,7 +6,7 @@ object CartesianProductGenerator {
 
     @JvmStatic
     fun <T> generate(vararg iterables: Iterable<T>, repeat: Int = 1): CombinatorialSequence<List<T>> {
-        require(repeat >= 0) { "repeat argument cannot be negative" }
+        require(repeat >= 0) { "repeat must be non-negative, was $repeat" }
 
         if (repeat == 0) {
             return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyList()))
@@ -29,7 +29,7 @@ object CartesianProductGenerator {
     }
 
     inline fun <reified T> generate(vararg arrays: Array<T>, repeat: Int = 1): CombinatorialSequence<Array<T>> {
-        require(repeat >= 0) { "repeat argument cannot be negative" }
+        require(repeat >= 0) { "repeat must be non-negative, was $repeat" }
 
         if (repeat == 0) {
             return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyArray()))

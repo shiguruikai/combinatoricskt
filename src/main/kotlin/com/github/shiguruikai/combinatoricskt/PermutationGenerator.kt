@@ -41,7 +41,7 @@ object PermutationGenerator {
     @JvmStatic
     fun <T> generate(iterable: Iterable<T>, length: Int? = null): CombinatorialSequence<List<T>> {
         if (length != null) {
-            require(length >= 0) { "length must be non-negative" }
+            require(length >= 0) { "length must be non-negative, was $length" }
         }
 
         val pool = iterable.toList()
@@ -59,7 +59,7 @@ object PermutationGenerator {
 
     inline fun <reified T> generate(array: Array<T>, length: Int? = null): CombinatorialSequence<Array<T>> {
         if (length != null) {
-            require(length >= 0) { "length must be non-negative" }
+            require(length >= 0) { "length must be non-negative, was $length" }
         }
 
         val pool = array.copyOf()

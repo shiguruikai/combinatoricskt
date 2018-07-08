@@ -5,7 +5,7 @@ package com.github.shiguruikai.combinatoricskt
 import java.math.BigInteger
 
 fun factorial(n: Int): BigInteger {
-    require(n >= 0)
+    require(n >= 0) { "n must be non-negative, was $n" }
     return factorialHelper(n)
 }
 
