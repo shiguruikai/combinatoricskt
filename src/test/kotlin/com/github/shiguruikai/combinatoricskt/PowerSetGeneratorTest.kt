@@ -69,6 +69,16 @@ internal class PowerSetGeneratorTest {
             return CombinatorialSequence(totalSize, sequence)
         }
 
+        fun <T> Iterable<T>.powerset3(): Sequence<List<T>> {
+
+            tailrec fun <T> powerset3Tailrec(left: Collection<T>, acc: Sequence<List<T>>): Sequence<List<T>> = when {
+                left.isEmpty() -> acc
+                else -> powerset3Tailrec(left.drop(1), acc + acc.map { it + left.first() })
+            }
+
+            return powerset3Tailrec(toList(), sequenceOf(listOf()))
+        }
+
         val comparator = Comparator<List<Char>> { o1, o2 -> Arrays.compare(o1.toTypedArray(), o2.toTypedArray()) }
 
         val range = 'a'..'f'
@@ -78,12 +88,14 @@ internal class PowerSetGeneratorTest {
             val psList = ps.toList()
             val ps1 = v.powerset1()
             val ps2 = v.powerset2()
+            val ps3 = v.powerset3()
 
             val size = 2.toBigInteger().pow(v.size)
 
             assertTrue(ps.totalSize == size && size == ps1.totalSize && size == ps2.totalSize)
             assertEquals(psList, ps1.toList())
             assertEquals(psList.sortedWith(comparator).sortedBy { it.size }, ps2.toList())
+            assertEquals(psList, ps3.toList())
         }
     }
 }
