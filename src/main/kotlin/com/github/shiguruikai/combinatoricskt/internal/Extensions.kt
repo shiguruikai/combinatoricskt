@@ -1,4 +1,4 @@
-package com.github.shiguruikai.combinatoricskt
+package com.github.shiguruikai.combinatoricskt.internal
 
 @PublishedApi
 internal operator fun <T> List<T>.times(n: Int): List<T> {

@@ -1,5 +1,6 @@
 package com.github.shiguruikai.combinatoricskt
 
+import com.github.shiguruikai.combinatoricskt.internal.times
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.math.BigInteger

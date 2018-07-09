@@ -1,5 +1,9 @@
 package com.github.shiguruikai.combinatoricskt
 
+import com.github.shiguruikai.combinatoricskt.internal.combinations
+import com.github.shiguruikai.combinatoricskt.internal.combinationsWithRepetition
+import com.github.shiguruikai.combinatoricskt.internal.factorial
+import com.github.shiguruikai.combinatoricskt.internal.permutations
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue

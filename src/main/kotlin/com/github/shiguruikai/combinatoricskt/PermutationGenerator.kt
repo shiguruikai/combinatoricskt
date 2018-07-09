@@ -1,5 +1,8 @@
 package com.github.shiguruikai.combinatoricskt
 
+import com.github.shiguruikai.combinatoricskt.internal.mapToArray
+import com.github.shiguruikai.combinatoricskt.internal.mapToList
+import com.github.shiguruikai.combinatoricskt.internal.permutations
 import java.math.BigInteger
 import kotlin.coroutines.experimental.buildIterator
 

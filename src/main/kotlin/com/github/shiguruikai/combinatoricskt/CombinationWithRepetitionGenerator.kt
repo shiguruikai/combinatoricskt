@@ -1,5 +1,7 @@
 package com.github.shiguruikai.combinatoricskt
 
+import com.github.shiguruikai.combinatoricskt.internal.combinationsWithRepetition
+import com.github.shiguruikai.combinatoricskt.internal.mapToArray
 import java.math.BigInteger
 import kotlin.coroutines.experimental.buildIterator
 

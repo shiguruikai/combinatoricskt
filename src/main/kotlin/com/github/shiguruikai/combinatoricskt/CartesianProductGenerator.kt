@@ -1,5 +1,6 @@
 package com.github.shiguruikai.combinatoricskt
 
+import com.github.shiguruikai.combinatoricskt.internal.times
 import java.math.BigInteger
 
 object CartesianProductGenerator {
