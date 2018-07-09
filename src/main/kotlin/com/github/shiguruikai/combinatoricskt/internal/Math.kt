@@ -3,6 +3,7 @@
 package com.github.shiguruikai.combinatoricskt.internal
 
 import java.math.BigInteger
+import kotlin.math.max
 
 @PublishedApi
 internal fun factorial(n: Int): BigInteger {
@@ -38,7 +39,7 @@ private fun factorialHelper(n: Int): BigInteger {
 
 private fun permutationsHelper(n: Int, r: Int): BigInteger {
     var acc = BigInteger.ONE
-    for (i in n - r + 1..n) {
+    for (i in max(2, n - r + 1)..n) {
         acc *= i.toBigInteger()
     }
     return acc

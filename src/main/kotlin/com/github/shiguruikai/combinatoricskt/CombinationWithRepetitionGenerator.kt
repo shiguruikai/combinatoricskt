@@ -41,7 +41,7 @@ object CombinationWithRepetitionGenerator {
         require(r >= 0) { "r must be non-negative, was $r" }
 
         if (r == 0) {
-            return CombinatorialSequence(BigInteger.ONE, sequenceOf(IntArray(0)))
+            return CombinatorialSequence(BigInteger.ONE, sequenceOf(intArrayOf()))
         } else if (n < 1) {
             return CombinatorialSequence(BigInteger.ZERO, emptySequence())
         }
