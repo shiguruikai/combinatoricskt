@@ -37,6 +37,17 @@ object PermutationWithRepetitionGenerator {
     }
 
     @JvmStatic
+    fun indices(n: Int, r: Int): CombinatorialSequence<IntArray> {
+        require(r >= 0) { "r must be non-negative, was $r" }
+
+        if (r == 0) {
+            return CombinatorialSequence(BigInteger.ONE, sequenceOf(intArrayOf()))
+        }
+
+        return build(n, r) { it.copyOf() }
+    }
+
+    @JvmStatic
     fun <T> generate(iterable: Iterable<T>, length: Int): CombinatorialSequence<List<T>> {
         require(length >= 0) { "length must be non-negative, was $length" }
 

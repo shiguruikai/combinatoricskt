@@ -39,6 +39,23 @@ object PermutationGenerator {
     }
 
     @JvmStatic
+    fun indices(n: Int, r: Int? = null): CombinatorialSequence<IntArray> {
+        if (r != null) {
+            require(r >= 0) { "r must be non-negative, was $r" }
+        }
+
+        val r1 = r ?: n
+
+        if (r1 > n) {
+            return CombinatorialSequence(BigInteger.ZERO, emptySequence())
+        } else if (r1 == 0) {
+            return CombinatorialSequence(BigInteger.ONE, sequenceOf(intArrayOf()))
+        }
+
+        return build(n, r1) { it.copyOf(r1) }
+    }
+
+    @JvmStatic
     fun <T> generate(iterable: Iterable<T>, length: Int? = null): CombinatorialSequence<List<T>> {
         if (length != null) {
             require(length >= 0) { "length must be non-negative, was $length" }

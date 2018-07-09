@@ -76,7 +76,8 @@ internal class CombinationWithRepetitionGeneratorTest {
             for (r in 0 until n + 1) {
                 val result = values.combinationsWithRepetition(r).toList()
 
-                assertEquals(result, values.toTypedArray().combinationsWithRepetition(r).toList().map { it.toList() })
+                assertEquals(result, values.toTypedArray().combinationsWithRepetition(r).map { it.toList() }.toList())
+                assertEquals(result, CombinationWithRepetitionGenerator.indices(n, r).map { it.map { values[it] } }.toList())
 
                 assertEquals(result.count(), numcombs(n, r).intValueExact())
                 assertEquals(result.count(), result.toSet().count())

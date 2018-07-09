@@ -13,10 +13,13 @@ internal class PowerSetGeneratorTest {
     private val emptyArray = emptyArray<Any>()
 
     @Test
-    fun test_powerset() {
+    fun test_powerset_empty() {
         assertEquals("[[]]", emptyList.powerset().toList().toString())
         assertEquals("[[]]", emptyArray.powerset().toList().map { it.contentToString() }.toString())
+    }
 
+    @Test
+    fun test_powerset() {
         val array = arrayOf(0, 1, 2)
         val expected = listOf(
                 "[[]]",
@@ -25,7 +28,7 @@ internal class PowerSetGeneratorTest {
                 "[[], [0], [1], [0, 1], [2], [0, 2], [1, 2], [0, 1, 2]]")
         expected.forEachIndexed { index, it ->
             assertEquals(it, array.take(index).powerset().toList().toString())
-            assertEquals(it, array.copyOf(index).powerset().toList().map { it.toList() }.toString())
+            assertEquals(it, array.copyOf(index).powerset().map { it.toList() }.toList().toString())
         }
 
         fun <T> Iterable<T>.powerset1(): CombinatorialSequence<List<T>> {

@@ -40,6 +40,14 @@ object PowerSetGenerator {
         return CombinatorialSequence(totalSize, iterator)
     }
 
+
+    @JvmStatic
+    fun indices(length: Int): CombinatorialSequence<IntArray> {
+        require(length >= 0) { "length must be non-negative, was $length" }
+
+        return build(length, { IntArray(it) }, { index, acc, poolIndex -> acc[index] = poolIndex })
+    }
+    
     @JvmStatic
     fun <T> generate(iterable: Iterable<T>): CombinatorialSequence<List<T>> {
         val pool = iterable.toList()

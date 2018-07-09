@@ -90,9 +90,9 @@ internal class CartesianProductGeneratorTest {
             assertEquals(expectedSize, list.size.toBigInteger())
             assertEquals(list, product1(*iterables, length = length).toList())
             assertEquals(list,
-                    CartesianProductGenerator.generate(*arrays, repeat = length).toList().map { it.toList() })
+                    CartesianProductGenerator.generate(*arrays, repeat = length).map { it.toList() }.toList())
             assertEquals(list,
-                    arrays[0].cartesianProduct(arrays[1], arrays[2], repeat = length).toList().map { it.toList() })
+                    arrays[0].cartesianProduct(arrays[1], arrays[2], repeat = length).map { it.toList() }.toList())
         }
     }
 }

@@ -35,21 +35,19 @@ internal class CombinationGeneratorTest {
 
     @Test
     fun test_combinations() {
-        assertEquals(
+        val array = arrayOf(0, 1, 2)
+        val expected = listOf(
                 "[[]]",
-                (0..2).combinations(0).toList().toString())
-        assertEquals(
                 "[[0], [1], [2]]",
-                (0..2).combinations(1).toList().toString())
-        assertEquals(
                 "[[0, 1], [0, 2], [1, 2]]",
-                (0..2).combinations(2).toList().toString())
-        assertEquals(
                 "[[0, 1, 2]]",
-                (0..2).combinations(3).toList().toString())
-        assertEquals(
-                "[]",
-                (0..2).combinations(4).toList().toString())
+                "[]")
+
+        expected.forEachIndexed { index, it ->
+            assertEquals(it, array.toList().combinations(index).toList().toString())
+            assertEquals(it, array.combinations(index).map { it.toList() }.toList().toString())
+            assertEquals(it, CombinationGenerator.indices(array.size, index).map { it.map { array[it] } }.toList().toString())
+        }
 
         // combinations() は permutations() のシーケンスから、
         // 要素が（入力プールの位置に応じた順序で）ソート順になっていない項目をフィルタリングしたものと同じ
@@ -74,7 +72,8 @@ internal class CombinationGeneratorTest {
             for (r in 0 until n + 1) {
                 val result = values.combinations(r).toList()
 
-                assertEquals(result, values.toTypedArray().combinations(r).toList().map { it.toList() })
+                assertEquals(result, values.toTypedArray().combinations(r).map { it.toList() }.toList())
+                assertEquals(result, CombinationGenerator.indices(n, r).map { it.map { values[it] } }.toList())
 
                 assertEquals(result.count(), if (r > n) 0 else combinations(n, r).intValueExact())
                 assertEquals(result.count(), result.toSet().count())

@@ -53,7 +53,7 @@ internal class PermutationGeneratorTest {
                 "[]")
         expected.forEachIndexed { index, it ->
             assertEquals(it, array.toList().permutations(index).toList().toString())
-            assertEquals(it, array.permutations(index).toList().map { it.toList() }.toString())
+            assertEquals(it, array.permutations(index).map { it.toList() }.toList().toString())
         }
 
         // permutations() は permutationsWithRepetition() のシーケンスから、
@@ -74,6 +74,7 @@ internal class PermutationGeneratorTest {
                 val result = values.permutations(r).toList()
 
                 assertEquals(result, values.toTypedArray().permutations(r).map { it.toList() }.toList())
+                assertEquals(result, PermutationGenerator.indices(n, r).map { it.map { values[it] } }.toList())
 
                 assertEquals(result.count(), if (r > n) 0 else permutations(n, r).intValueExact())
                 assertEquals(result.count(), result.toSet().count())
