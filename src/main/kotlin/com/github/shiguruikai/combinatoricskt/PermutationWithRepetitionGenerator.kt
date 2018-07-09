@@ -56,6 +56,7 @@ object PermutationWithRepetitionGenerator {
         }
 
         val pool = iterable.toList()
+
         return build(pool.size, length) { it.map { pool[it] } }
     }
 
@@ -67,6 +68,7 @@ object PermutationWithRepetitionGenerator {
         }
 
         val pool = array.copyOf()
+
         return build(pool.size, length) { it.mapToArray { pool[it] } }
     }
 }
