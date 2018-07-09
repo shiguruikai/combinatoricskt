@@ -42,9 +42,10 @@ object PermutationGenerator {
     }
 
     /**
-     * Returns a sequence of permutations of [r] of [n] elements.
+     * Returns a sequence of [r] number of permutations [n] elements.
      *
      * If [r] is not specified or is null, the default for [r] is the length of [n].
+     *
      * @throws IllegalArgumentException if [r] is negative.
      */
     @JvmStatic
@@ -68,6 +69,7 @@ object PermutationGenerator {
      * Returns a sequence of permutations of [length] of the elements of [iterable].
      *
      * If [length] is not specified or is null, the default for [length] is the length of [iterable].
+     *
      * @throws IllegalArgumentException if [length] is negative.
      */
     @JvmStatic
@@ -93,6 +95,7 @@ object PermutationGenerator {
      * Returns a sequence of permutations of [length] of the elements of [array].
      *
      * If [length] is not specified or is null, the default for [length] is the length of [array].
+     *
      * @throws IllegalArgumentException if [length] is negative.
      */
     inline fun <reified T> generate(array: Array<T>, length: Int? = null): CombinatorialSequence<Array<T>> {

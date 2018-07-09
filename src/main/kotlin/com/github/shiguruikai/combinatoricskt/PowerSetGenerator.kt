@@ -41,7 +41,8 @@ object PowerSetGenerator {
     }
 
     /**
-     * Returns a sequence of powers of [n] elements.
+     * Returns a sequence of power set of [n] elements.
+     *
      * @throws IllegalArgumentException if [n] is negative.
      */
     @JvmStatic

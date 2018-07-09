@@ -8,7 +8,9 @@ object CartesianProductGenerator {
     /**
      * Returns a sequence of cartesian product of the elements of [iterables].
      *
-     * To compute the cartesian product of [iterables] with itself, specify the number of repetitions with the [repeat] named argument.
+     * To compute the cartesian product of [iterables] with itself,
+     * specify the number of repetitions with the [repeat] named argument.
+     *
      * @throws IllegalArgumentException if [repeat] is negative.
      */
     @JvmStatic
@@ -39,6 +41,7 @@ object CartesianProductGenerator {
      * Returns a sequence of cartesian product of the elements of [arrays].
      *
      * To compute the cartesian product of [arrays] with itself, specify the number of repetitions with the [repeat] named argument.
+     *
      * @throws IllegalArgumentException if [repeat] is negative.
      */
     inline fun <reified T> generate(vararg arrays: Array<T>, repeat: Int = 1): CombinatorialSequence<Array<T>> {

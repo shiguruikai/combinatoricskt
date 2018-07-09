@@ -38,7 +38,8 @@ object PermutationWithRepetitionGenerator {
     }
 
     /**
-     * Returns a sequence of permutations with repetition of [r] of [n] elements.
+     * Returns a sequence of [r] number of permutations with repetition of [n] elements.
+     *
      * @throws IllegalArgumentException if [r] is negative.
      */
     @JvmStatic
@@ -54,6 +55,7 @@ object PermutationWithRepetitionGenerator {
 
     /**
      * Returns a sequence of permutations with repetition of [length] of the elements of [iterable].
+     *
      * @throws IllegalArgumentException if [length] is negative.
      */
     @JvmStatic
@@ -71,6 +73,7 @@ object PermutationWithRepetitionGenerator {
 
     /**
      * Returns a sequence of permutations with repetition of [length] of the elements of [array].
+     *
      * @throws IllegalArgumentException if [length] is negative.
      */
     inline fun <reified T> generate(array: Array<T>, length: Int): CombinatorialSequence<Array<T>> {
