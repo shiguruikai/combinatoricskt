@@ -63,16 +63,15 @@ object CombinationGenerator {
     inline fun <reified T> generate(array: Array<T>, length: Int): CombinatorialSequence<Array<T>> {
         require(length >= 0) { "length must be non-negative, was $length" }
 
+        val n = array.size
+
         if (length == 0) {
             return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyArray()))
+        } else if (length > n) {
+            return CombinatorialSequence(BigInteger.ZERO, emptySequence())
         }
 
         val pool = array.copyOf()
-        val n = pool.size
-
-        if (length > n) {
-            return CombinatorialSequence(BigInteger.ZERO, emptySequence())
-        }
 
         return build(n, length) { it.mapToArray { pool[it] } }
     }

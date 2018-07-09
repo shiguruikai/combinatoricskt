@@ -54,7 +54,7 @@ object CombinationWithRepetitionGenerator {
         val pool = iterable.toList()
         val n = pool.size
 
-        if (n == 0) {
+        if (n < 1) {
             return CombinatorialSequence(BigInteger.ZERO, emptySequence())
         }
 
@@ -64,16 +64,15 @@ object CombinationWithRepetitionGenerator {
     inline fun <reified T> generate(array: Array<T>, length: Int): CombinatorialSequence<Array<T>> {
         require(length >= 0) { "length must be non-negative, was $length" }
 
+        val n = array.size
+
         if (length == 0) {
             return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyArray()))
+        } else if (n < 1) {
+            return CombinatorialSequence(BigInteger.ZERO, emptySequence())
         }
 
         val pool = array.copyOf()
-        val n = pool.size
-
-        if (n == 0) {
-            return CombinatorialSequence(BigInteger.ZERO, emptySequence())
-        }
 
         return build(n, length) { it.mapToArray { pool[it] } }
     }

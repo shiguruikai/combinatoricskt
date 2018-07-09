@@ -79,8 +79,7 @@ object PermutationGenerator {
             require(length >= 0) { "length must be non-negative, was $length" }
         }
 
-        val pool = array.copyOf()
-        val n = pool.size
+        val n = array.size
         val r = length ?: n
 
         if (r > n) {
@@ -88,6 +87,8 @@ object PermutationGenerator {
         } else if (r == 0) {
             return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyArray()))
         }
+
+        val pool = array.copyOf()
 
         return build(n, r) { indices -> indices.mapToArray(r) { pool[it] } }
     }
