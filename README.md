@@ -24,7 +24,7 @@ repositories {
 }
  
 dependencies {
-    implementation 'com.github.shiguruikai:combinatoricskt:0.4.0'
+    implementation 'com.github.shiguruikai:combinatoricskt:0.5.0'
 }
 ```
 
