@@ -40,13 +40,20 @@ object PowerSetGenerator {
         return CombinatorialSequence(totalSize, iterator)
     }
 
+    /**
+     * Returns a sequence of powers of [n] elements.
+     * @throws IllegalArgumentException if [n] is negative.
+     */
     @JvmStatic
-    fun indices(length: Int): CombinatorialSequence<IntArray> {
-        require(length >= 0) { "length must be non-negative, was $length" }
+    fun indices(n: Int): CombinatorialSequence<IntArray> {
+        require(n >= 0) { "n must be non-negative, was $n" }
 
-        return build(length, { IntArray(it) }, { index, acc, poolIndex -> acc[index] = poolIndex })
+        return build(n, { IntArray(it) }, { index, acc, poolIndex -> acc[index] = poolIndex })
     }
 
+    /**
+     * Returns a sequence of power set of the elements of [iterable].
+     */
     @JvmStatic
     fun <T> generate(iterable: Iterable<T>): CombinatorialSequence<List<T>> {
         val pool = iterable.toList()
@@ -54,6 +61,9 @@ object PowerSetGenerator {
         return build(pool.size, { ArrayList<T>(it) }, { _, acc, poolIndex -> acc += pool[poolIndex] })
     }
 
+    /**
+     * Returns a sequence of power set of the elements of [array].
+     */
     inline fun <reified T> generate(array: Array<T>): CombinatorialSequence<Array<T>> {
         val pool = array.copyOf()
 

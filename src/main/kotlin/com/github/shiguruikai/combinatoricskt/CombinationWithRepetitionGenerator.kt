@@ -32,6 +32,10 @@ object CombinationWithRepetitionGenerator {
         return CombinatorialSequence(totalSize, iterator)
     }
 
+    /**
+     * Returns a sequence of combinations with repetition of [r] of [n] elements.
+     * @throws IllegalArgumentException if [r] is negative.
+     */
     @JvmStatic
     fun indices(n: Int, r: Int): CombinatorialSequence<IntArray> {
         require(r >= 0) { "r must be non-negative, was $r" }
@@ -45,6 +49,10 @@ object CombinationWithRepetitionGenerator {
         return build(n, r) { it.copyOf() }
     }
 
+    /**
+     * Returns a sequence of combinations with repetition of [length] of the elements of [iterable].
+     * @throws IllegalArgumentException if [length] is negative.
+     */
     @JvmStatic
     fun <T> generate(iterable: Iterable<T>, length: Int): CombinatorialSequence<List<T>> {
         require(length >= 0) { "length must be non-negative, was $length" }
@@ -63,6 +71,10 @@ object CombinationWithRepetitionGenerator {
         return build(n, length) { it.map { pool[it] } }
     }
 
+    /**
+     * Returns a sequence of combinations with repetition of [length] of the elements of [array].
+     * @throws IllegalArgumentException if [length] is negative.
+     */
     inline fun <reified T> generate(array: Array<T>, length: Int): CombinatorialSequence<Array<T>> {
         require(length >= 0) { "length must be non-negative, was $length" }
 

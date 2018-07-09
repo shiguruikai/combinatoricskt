@@ -41,6 +41,12 @@ object PermutationGenerator {
         return CombinatorialSequence(totalSize, iterator)
     }
 
+    /**
+     * Returns a sequence of permutations of [r] of [n] elements.
+     *
+     * If [r] is not specified or is null, the default for [r] is the length of [n].
+     * @throws IllegalArgumentException if [r] is negative.
+     */
     @JvmStatic
     fun indices(n: Int, r: Int? = null): CombinatorialSequence<IntArray> {
         if (r != null) {
@@ -58,6 +64,12 @@ object PermutationGenerator {
         return build(n, r1) { it.copyOf(r1) }
     }
 
+    /**
+     * Returns a sequence of permutations of [length] of the elements of [iterable].
+     *
+     * If [length] is not specified or is null, the default for [length] is the length of [iterable].
+     * @throws IllegalArgumentException if [length] is negative.
+     */
     @JvmStatic
     fun <T> generate(iterable: Iterable<T>, length: Int? = null): CombinatorialSequence<List<T>> {
         if (length != null) {
@@ -77,6 +89,12 @@ object PermutationGenerator {
         return build(n, r) { indices -> indices.mapToList(r) { pool[it] } }
     }
 
+    /**
+     * Returns a sequence of permutations of [length] of the elements of [array].
+     *
+     * If [length] is not specified or is null, the default for [length] is the length of [array].
+     * @throws IllegalArgumentException if [length] is negative.
+     */
     inline fun <reified T> generate(array: Array<T>, length: Int? = null): CombinatorialSequence<Array<T>> {
         if (length != null) {
             require(length >= 0) { "length must be non-negative, was $length" }
