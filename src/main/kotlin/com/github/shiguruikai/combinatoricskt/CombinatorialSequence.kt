@@ -45,8 +45,13 @@ class CombinatorialSequence<T>(
                 iterator(), Spliterator.ORDERED), false)
     }
 
-    private companion object {
-        // java.util.ArrayList.MAX_ARRAY_SIZE
-        private val MAX_ARRAY_SIZE = (Int.MAX_VALUE - 8).toBigInteger()
+    companion object {
+
+        /**
+         * The value is 2147483639.
+         *
+         * @see java.util.ArrayList.MAX_ARRAY_SIZE
+         */
+        val MAX_ARRAY_SIZE = (Int.MAX_VALUE - 8).toBigInteger()
     }
 }
