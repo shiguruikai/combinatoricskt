@@ -1,5 +1,6 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.2.51'
+    id 'org.jetbrains.dokka' version '0.9.17'
 }
 
 group 'com.github.shiguruikai'
@@ -7,6 +8,7 @@ version '0.5.0'
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -17,6 +19,12 @@ dependencies {
 }
 
 apply plugin: 'maven'
+apply plugin: 'org.jetbrains.dokka'
+
+dokka {
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/dokka"
+}
 
 test {
     useJUnitPlatform()
