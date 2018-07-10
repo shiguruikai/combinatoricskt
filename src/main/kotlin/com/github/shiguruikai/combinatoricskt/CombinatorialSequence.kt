@@ -6,9 +6,10 @@ import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
 /**
- * This [Sequence] class has the [totalSize] property of the total number of sequences.
+ * This [CombinatorialSequence] class has the [totalSize] property of the total number of sequences.
  * This sequence can be iterated only once.
  *
+ * @see kotlin.sequences.Sequence
  * @see kotlin.sequences.constrainOnce
  */
 class CombinatorialSequence<T>(
@@ -45,9 +46,7 @@ class CombinatorialSequence<T>(
     }
 
     private companion object {
-        /**
-         * @see java.util.ArrayList.MAX_ARRAY_SIZE
-         */
+        // java.util.ArrayList.MAX_ARRAY_SIZE
         private val MAX_ARRAY_SIZE = (Int.MAX_VALUE - 8).toBigInteger()
     }
 }

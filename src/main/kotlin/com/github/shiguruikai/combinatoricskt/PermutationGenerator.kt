@@ -6,6 +6,9 @@ import com.github.shiguruikai.combinatoricskt.internal.permutations
 import java.math.BigInteger
 import kotlin.coroutines.experimental.buildIterator
 
+/**
+ * The class [PermutationGenerator] contains methods for generating permutations.
+ */
 object PermutationGenerator {
 
     @PublishedApi

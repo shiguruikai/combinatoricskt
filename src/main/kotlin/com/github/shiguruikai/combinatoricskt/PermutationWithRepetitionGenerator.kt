@@ -4,6 +4,9 @@ import com.github.shiguruikai.combinatoricskt.internal.mapToArray
 import java.math.BigInteger
 import kotlin.coroutines.experimental.buildIterator
 
+/**
+ * The class [PermutationWithRepetitionGenerator] contains methods for generating permutations with repetition.
+ */
 object PermutationWithRepetitionGenerator {
 
     @PublishedApi

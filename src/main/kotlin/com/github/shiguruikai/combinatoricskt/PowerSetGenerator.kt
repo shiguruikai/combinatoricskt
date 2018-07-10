@@ -4,6 +4,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.coroutines.experimental.buildIterator
 
+/**
+ * The class [PowerSetGenerator] contains methods for generating power set.
+ */
 object PowerSetGenerator {
 
     @PublishedApi

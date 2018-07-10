@@ -5,6 +5,9 @@ import com.github.shiguruikai.combinatoricskt.internal.mapToArray
 import java.math.BigInteger
 import kotlin.coroutines.experimental.buildIterator
 
+/**
+ * The class [CombinationWithRepetitionGenerator] contains methods for generating combinations with repetition.
+ */
 object CombinationWithRepetitionGenerator {
 
     @PublishedApi

@@ -3,6 +3,9 @@ package com.github.shiguruikai.combinatoricskt
 import com.github.shiguruikai.combinatoricskt.internal.times
 import java.math.BigInteger
 
+/**
+ * The class [CartesianProductGenerator] contains methods for generating cartesian product.
+ */
 object CartesianProductGenerator {
 
     /**
@@ -40,7 +43,8 @@ object CartesianProductGenerator {
     /**
      * Returns a sequence of cartesian product of the elements of [arrays].
      *
-     * To compute the cartesian product of [arrays] with itself, specify the number of repetitions with the [repeat] named argument.
+     * To compute the cartesian product of [arrays] with itself,
+     * specify the number of repetitions with the [repeat] named argument.
      *
      * @throws IllegalArgumentException if [repeat] is negative.
      */

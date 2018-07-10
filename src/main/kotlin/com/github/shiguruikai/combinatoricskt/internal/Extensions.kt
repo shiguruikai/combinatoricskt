@@ -21,11 +21,11 @@ internal inline fun <R> IntArray.mapToList(listSize: Int = size, transform: (Int
 }
 
 @PublishedApi
-@Suppress("UNCHECKED_CAST")
 internal inline fun <reified R> IntArray.mapToArray(arraySize: Int = size, transform: (Int) -> R): Array<R> {
     val result = arrayOfNulls<R>(arraySize)
     repeat(arraySize) {
         result[it] = transform(this[it])
     }
+    @Suppress("UNCHECKED_CAST")
     return result as Array<R>
 }
