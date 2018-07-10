@@ -134,7 +134,6 @@ internal class CombinatoricsKtTest {
 
         range.permutations(n).testReuse()
         range.permutationsWithRepetition(n).testReuse()
-        range.permutationsWithRepetition(n).testReuse()
         range.combinations(n).testReuse()
         range.combinationsWithRepetition(n).testReuse()
         range.cartesianProduct().testReuse()
