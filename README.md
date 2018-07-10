@@ -7,12 +7,12 @@ A combinatorics library for Kotlin.
 Generate the following sequence from Iterable or Array.  
 Iterable または Array から以下のシーケンスを生成する。
 
-- Permutations （順列）
-- Permutations with Repetition （重複順列）
-- Combinations （組合せ）
-- Combinations with Repetition （重複組合せ）
-- Cartesian Product （デカルト積）
-- Power Set （冪集合）
+- [Permutations](/README.md#permutations) （順列）
+- [Permutations with Repetition](/README.md#permutations-with-repetition) （重複順列）
+- [Combinations](/README.md#combinations) （組合せ）
+- [Combinations with Repetition](/README.md#combinations-with-repetition) （重複組合せ）
+- [Cartesian Product](/README.md#cartesian-product) （デカルト積）
+- [Power Set](/README.md#power-set) （冪集合）
 
 ## Download
 
@@ -30,7 +30,17 @@ dependencies {
 
 ## Usage
 
+There are three ways to generate a sequence.
+
+1. Use extension functions. (Alias of 2.)
+2. Use the generate method of each Generator class.
+3. Use the indices method of each Generator class.
+
 [CombinatorialSequence](/src/main/kotlin/com/github/shiguruikai/combinatoricskt/CombinatorialSequence.kt) is Sequence, but it can be iterated only once.
+
+### 1. Use extension functions
+
+See [Itertools.kt](/src/main/kotlin/com/github/shiguruikai/combinatoricskt/Itertools.kt)
 
 Iterable Extension Functions:
 
@@ -64,7 +74,47 @@ inline fun <reified T> Array<T>.cartesianProduct(vararg others: Array<T>, repeat
 inline fun <reified T> Array<T>.powerset(): CombinatorialSequence<Array<T>>
 ```
 
-### Permutations （順列）
+### 2. Use the generate method
+
+Example:
+
+```kotlin 
+PermutationGenerator.generate('a'..'c', length = 2)
+        .forEach {
+            println(it)
+        }
+//[a, b]
+//[a, c]
+//[b, a]
+//[b, c]
+//[c, a]
+//[c, b]
+```
+
+### 3. Use the indices method
+
+The `indices` method generate the indices sequence of IntArray.
+
+Example:
+
+```kotlin 
+val array = arrayOf('a', 'b', 'c')
+
+PermutationGenerator.indices(n = 3, r = 2)
+        .map { indices: IntArray ->
+            indices.map { index -> array[index] }
+        }.forEach {
+            println(it)
+        }
+//[a, b]
+//[a, c]
+//[b, a]
+//[b, c]
+//[c, a]
+//[c, b]
+```
+
+## Permutations
 
 ```kotlin 
 (1..3).permutations().toList()
@@ -80,7 +130,7 @@ inline fun <reified T> Array<T>.powerset(): CombinatorialSequence<Array<T>>
 // [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
 ```
 
-### Permutations With Repetition （重複順列）
+## Permutations with Repetition
 
 ```kotlin 
 (1..3).permutationsWithRepetition(1).toList()
@@ -93,7 +143,7 @@ inline fun <reified T> Array<T>.powerset(): CombinatorialSequence<Array<T>>
 // [[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2], [1, 3, 3], [2, 1, 1], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 2], [2, 2, 3], [2, 3, 1], [2, 3, 2], [2, 3, 3], [3, 1, 1], [3, 1, 2], [3, 1, 3], [3, 2, 1], [3, 2, 2], [3, 2, 3], [3, 3, 1], [3, 3, 2], [3, 3, 3]]
 ```
 
-### Combinations （組合せ）
+## Combinations
 
 ```kotlin 
 (1..3).combinations(1).toList()
@@ -106,7 +156,7 @@ inline fun <reified T> Array<T>.powerset(): CombinatorialSequence<Array<T>>
 // [[1, 2, 3]]
 ```
 
-### Combinations With Repetition （重複組合せ）
+## Combinations with Repetition
 
 ```kotlin 
 (1..3).combinationsWithRepetition(1).toList()
@@ -119,7 +169,7 @@ inline fun <reified T> Array<T>.powerset(): CombinatorialSequence<Array<T>>
 // [[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 2], [1, 2, 3], [1, 3, 3], [2, 2, 2], [2, 2, 3], [2, 3, 3], [3, 3, 3]]
 ```
 
-### Cartesian Product （デカルト積）
+## Cartesian Product
 
 ```kotlin 
 (1..3).cartesianProduct(repeat = 1).toList()
@@ -138,7 +188,7 @@ inline fun <reified T> Array<T>.powerset(): CombinatorialSequence<Array<T>>
 // [[0, a, 0, a], [0, a, 0, b], [0, a, 1, a], [0, a, 1, b], [0, b, 0, a], [0, b, 0, b], [0, b, 1, a], [0, b, 1, b], [1, a, 0, a], [1, a, 0, b], [1, a, 1, a], [1, a, 1, b], [1, b, 0, a], [1, b, 0, b], [1, b, 1, a], [1, b, 1, b]]
 
 ```
-### Power Set （冪集合）
+## Power Set
 
 ```kotlin 
 (1..3).powerset().toList()
