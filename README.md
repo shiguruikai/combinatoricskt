@@ -1,5 +1,3 @@
-[![JitPack](https://jitpack.io/v/shiguruikai/combinatoricskt.svg)](https://jitpack.io/#shiguruikai/combinatoricskt)
-
 # combinatoricskt
 
 A combinatorics library for Kotlin.
@@ -16,16 +14,20 @@ Iterable または Array から以下のシーケンスを生成する。
 
 ## Download
 
-Add the following to `build.gradle` file:
+Gradle:
 
 ```gradle 
-repositories {
-    maven { url "https://jitpack.io" }
-}
- 
-dependencies {
-    implementation 'com.github.shiguruikai:combinatoricskt:0.6.0'
-}
+implementation 'com.github.shiguruikai:combinatoricskt:1.0.0'
+```
+
+Maven:
+
+```xml 
+<dependency>
+    <groupId>com.github.shiguruikai</groupId>
+    <artifactId>combinatoricskt</artifactId>
+    <version>1.0.0</version>
+</dependency>
 ```
 
 ## Usage
@@ -197,6 +199,7 @@ CombinationWithRepetitionGenerator.indices(3, 2).map { it.contentToString() }.to
 CartesianProductGenerator.indices(1, 3, 2).map { it.contentToString() }.toList()
 // [[0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 1, 1], [0, 2, 0], [0, 2, 1]]
 ```
+
 ## Power Set
 
 ```kotlin 
@@ -208,4 +211,5 @@ PowerSetGenerator.indices(3).map { it.contentToString() }.toList()
 ```
 
 ## License
+
 [MIT](/LICENSE)
