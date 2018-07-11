@@ -85,15 +85,20 @@ internal class CartesianProductGeneratorTest {
         repeat(10) {
             val iterables = (0..2).map { argTypes[random.nextInt(argTypes.size)] }.toTypedArray()
             val arrays = iterables.map { it.toList().toTypedArray() }.toTypedArray()
-            val length = random.nextInt(4)
-            val expectedSize = iterables.fold(BigInteger.ONE) { acc, iter -> acc * iter.count().toBigInteger() }.pow(length)
-            val list = CartesianProductGenerator.generate(*iterables, repeat = length).toList()
+            val repeat = random.nextInt(4)
+            val expectedSize = iterables.fold(BigInteger.ONE) { acc, iter -> acc * iter.count().toBigInteger() }.pow(repeat)
+            val list = CartesianProductGenerator.generate(*iterables, repeat = repeat).toList()
+
             assertEquals(expectedSize, list.size.toBigInteger())
-            assertEquals(list, product1(*iterables, length = length).toList())
+            assertEquals(list, product1(*iterables, length = repeat).toList())
             assertEquals(list,
-                    CartesianProductGenerator.generate(*arrays, repeat = length).map { it.toList() }.toList())
+                    CartesianProductGenerator.generate(*arrays, repeat = repeat).map { it.toList() }.toList())
             assertEquals(list,
-                    arrays[0].cartesianProduct(arrays[1], arrays[2], repeat = length).map { it.toList() }.toList())
+                    arrays[0].cartesianProduct(arrays[1], arrays[2], repeat = repeat).map { it.toList() }.toList())
+
+            val indices = CartesianProductGenerator.indices(*iterables.map { it.count() }.toIntArray(), repeat = repeat).toList()
+            val repeated = iterables.map { it.toList() } * repeat
+            assertEquals(list, indices.map { it.zip(repeated) { a, b -> b[a] } })
         }
     }
 }
