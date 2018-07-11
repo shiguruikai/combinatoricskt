@@ -1,3 +1,10 @@
+/*
+ * Copyright 2018 shiguruikai
+ *
+ * Released under the MIT License.
+ * see https://github.com/shiguruikai/combinatoricskt/blob/master/LICENSE
+ */
+
 package com.github.shiguruikai.combinatoricskt
 
 import com.github.shiguruikai.combinatoricskt.internal.times
