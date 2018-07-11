@@ -36,7 +36,7 @@ There are three ways to generate a sequence.
 2. Use the generate method of each Generator class.
 3. Use the indices method of each Generator class.
 
-[CombinatorialSequence](/src/main/kotlin/com/github/shiguruikai/combinatoricskt/CombinatorialSequence.kt) is Sequence, but it can be iterated only once.
+The returned [CombinatorialSequence](/src/main/kotlin/com/github/shiguruikai/combinatoricskt/CombinatorialSequence.kt) is Sequence, but it can be iterated only once.
 
 ### 1. Use extension functions
 
@@ -79,16 +79,13 @@ inline fun <reified T> Array<T>.powerset(): CombinatorialSequence<Array<T>>
 Example:
 
 ```kotlin 
-PermutationGenerator.generate('a'..'c', length = 2)
-        .forEach {
-            println(it)
-        }
-//[a, b]
-//[a, c]
-//[b, a]
-//[b, c]
-//[c, a]
-//[c, b]
+PermutationGenerator.generate('a'..'c', length = 2).forEach(::println)
+// [a, b]
+// [a, c]
+// [b, a]
+// [b, c]
+// [c, a]
+// [c, b]
 ```
 
 ### 3. Use the indices method
@@ -103,15 +100,16 @@ val array = arrayOf('a', 'b', 'c')
 PermutationGenerator.indices(n = 3, r = 2)
         .map { indices: IntArray ->
             indices.map { index -> array[index] }
-        }.forEach {
+        }
+        .forEach {
             println(it)
         }
-//[a, b]
-//[a, c]
-//[b, a]
-//[b, c]
-//[c, a]
-//[c, b]
+// [a, b]
+// [a, c]
+// [b, a]
+// [b, c]
+// [c, a]
+// [c, b]
 ```
 
 ## Permutations
@@ -128,6 +126,9 @@ PermutationGenerator.indices(n = 3, r = 2)
 
 (1..3).permutations(3).toList()
 // [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
+
+PermutationGenerator.indices(3, 2).map { it.contentToString() }.toList()
+// [[0, 1], [0, 2], [1, 0], [1, 2], [2, 0], [2, 1]]
 ```
 
 ## Permutations with Repetition
@@ -141,6 +142,9 @@ PermutationGenerator.indices(n = 3, r = 2)
 
 (1..3).permutationsWithRepetition(3).toList()
 // [[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2], [1, 3, 3], [2, 1, 1], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 2], [2, 2, 3], [2, 3, 1], [2, 3, 2], [2, 3, 3], [3, 1, 1], [3, 1, 2], [3, 1, 3], [3, 2, 1], [3, 2, 2], [3, 2, 3], [3, 3, 1], [3, 3, 2], [3, 3, 3]]
+
+PermutationWithRepetitionGenerator.indices(3, 2).map { it.contentToString() }.toList()
+// [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]]
 ```
 
 ## Combinations
@@ -154,6 +158,9 @@ PermutationGenerator.indices(n = 3, r = 2)
 
 (1..3).combinations(3).toList()
 // [[1, 2, 3]]
+
+CombinationGenerator.indices(3, 2).map { it.contentToString() }.toList()
+// [[0, 1], [0, 2], [1, 2]]
 ```
 
 ## Combinations with Repetition
@@ -167,32 +174,37 @@ PermutationGenerator.indices(n = 3, r = 2)
 
 (1..3).combinationsWithRepetition(3).toList()
 // [[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 2], [1, 2, 3], [1, 3, 3], [2, 2, 2], [2, 2, 3], [2, 3, 3], [3, 3, 3]]
+
+CombinationWithRepetitionGenerator.indices(3, 2).map { it.contentToString() }.toList()
+// [[0, 0], [0, 1], [0, 2], [1, 1], [1, 2], [2, 2]]
 ```
 
 ## Cartesian Product
 
 ```kotlin 
-(1..3).cartesianProduct(repeat = 1).toList()
-// [[1], [2], [3]]
-
-(1..3).cartesianProduct(repeat = 2).toList()
-// [[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]]
-
 (0..1).cartesianProduct('a'..'b').toList()
 // [[0, a], [0, b], [1, a], [1, b]]
 
 (0..1).cartesianProduct('a'..'b', listOf('x')).toList()
 // [[0, a, x], [0, b, x], [1, a, x], [1, b, x]]
 
+(1..3).cartesianProduct(repeat = 2).toList()
+// [[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]]
+
 (0..1).cartesianProduct('a'..'b', repeat = 2).toList()
 // [[0, a, 0, a], [0, a, 0, b], [0, a, 1, a], [0, a, 1, b], [0, b, 0, a], [0, b, 0, b], [0, b, 1, a], [0, b, 1, b], [1, a, 0, a], [1, a, 0, b], [1, a, 1, a], [1, a, 1, b], [1, b, 0, a], [1, b, 0, b], [1, b, 1, a], [1, b, 1, b]]
 
+CartesianProductGenerator.indices(1, 3, 2).map { it.contentToString() }.toList()
+// [[0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 1, 1], [0, 2, 0], [0, 2, 1]]
 ```
 ## Power Set
 
 ```kotlin 
 (1..3).powerset().toList()
 // [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
+
+PowerSetGenerator.indices(3).map { it.contentToString() }.toList()
+// [[], [0], [1], [0, 1], [2], [0, 2], [1, 2], [0, 1, 2]]
 ```
 
 ## License
