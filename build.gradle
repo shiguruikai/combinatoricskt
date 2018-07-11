@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.github.shiguruikai'
-version '0.6.0'
+version '1.0.0'
 
 repositories {
     mavenCentral()
@@ -19,6 +19,8 @@ dependencies {
 }
 
 apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
 apply plugin: 'org.jetbrains.dokka'
 
 dokka {
@@ -43,11 +45,81 @@ kotlin {
     }
 }
 
+jar {
+    manifest {
+        attributes 'Implementation-Title': project.name,
+                'Automatic-Module-Name': 'com.github.shiguruikai.combinatoricskt',
+                'Implementation-Version': project.version
+    }
+}
+
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
 }
 
+task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+    outputFormat = 'javadoc'
+    outputDirectory = javadoc.destinationDir
+}
+
+task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
 artifacts {
     archives sourcesJar
+    archives javadocJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId project.name
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            pom {
+                name = project.name
+                description = 'A combinatorics library for Kotlin'
+                url = 'https://github.com/shiguruikai/combinatoricskt'
+                licenses {
+                    license {
+                        name = 'The MIT License'
+                        url = 'https://opensource.org/licenses/MIT'
+                        distribution = 'repo'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'shiguruikai'
+                        name = 'Shigurui Kai'
+                        email = 'kai.shigurui@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/shiguruikai/combinatoricskt.git'
+                    developerConnection = 'scm:git:https://github.com/shiguruikai/combinatoricskt.git'
+                    url = 'https://github.com/shiguruikai/combinatoricskt'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+            url project.version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username = sonatypeUsername
+                password = sonatypePassword
+            }
+        }
+    }
+}
+
+signing {
+    useGpgCmd()
+    sign publishing.publications.mavenJava
 }
