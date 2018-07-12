@@ -1,3 +1,6 @@
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.shiguruikai/combinatoricskt.svg)](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.shiguruikai%22%20AND%20a%3A%22combinatoricskt%22)
+[![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](/LICENSE)
+
 # combinatoricskt
 
 A combinatorics library for Kotlin.
@@ -34,7 +37,7 @@ Maven:
 
 There are three ways to generate a sequence.
 
-1. Use extension functions. (Alias of 2.)
+1. Use extension functions.
 2. Use the generate method of each Generator class.
 3. Use the indices method of each Generator class.
 
@@ -92,7 +95,7 @@ PermutationGenerator.generate('a'..'c', length = 2).forEach(::println)
 
 ### 3. Use the indices method
 
-The `indices` method generate the indices sequence of IntArray.
+The indices method generate the indices sequence of IntArray.
 
 Example:
 
