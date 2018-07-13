@@ -8,6 +8,7 @@
 package com.github.shiguruikai.combinatoricskt
 
 import com.github.shiguruikai.combinatoricskt.internal.permutations
+import com.github.shiguruikai.combinatoricskt.internal.swap
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertIterableEquals
@@ -74,6 +75,32 @@ internal class PermutationGeneratorTest {
                     .forEach { yield(it.map { pool[it] }) }
         }
 
+        // https://www.wikiwand.com/en/Heap%27s_algorithm
+        // 辞書順で取得できない
+        fun <T> Iterable<T>.permutations3(): Sequence<List<T>> = buildSequence {
+            val pool = toList()
+            val n = pool.size
+            val indices = IntArray(n) { it }
+            val cycles = IntArray(n)
+            yield(indices.map { pool[it] })
+            var i = 0
+            while (i < n) {
+                if (cycles[i] < i) {
+                    if (i and 1 == 0) {
+                        indices.swap(0, i)
+                    } else {
+                        indices.swap(cycles[i], i)
+                    }
+                    yield(indices.map { pool[it] })
+                    cycles[i]++
+                    i = 0
+                } else {
+                    cycles[i] = 0
+                    i++
+                }
+            }
+        }
+
         val comparator = Comparator<List<Int>> { o1, o2 -> Arrays.compare(o1.toTypedArray(), o2.toTypedArray()) }
 
         for (n in 0 until 7) {
@@ -95,6 +122,10 @@ internal class PermutationGeneratorTest {
                 }
 
                 assertEquals(result, values.permutations2(r).toList())
+
+                if (result.size == r) {
+                    assertEquals(result, values.permutations3().sortedWith(comparator).toList())
+                }
 
                 if (r == n) {
                     assertEquals(result, values.permutations(null).toList())
