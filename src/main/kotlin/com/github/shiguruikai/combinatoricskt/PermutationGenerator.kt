@@ -10,6 +10,7 @@ package com.github.shiguruikai.combinatoricskt
 import com.github.shiguruikai.combinatoricskt.internal.mapToArray
 import com.github.shiguruikai.combinatoricskt.internal.mapToList
 import com.github.shiguruikai.combinatoricskt.internal.permutations
+import com.github.shiguruikai.combinatoricskt.internal.swap
 import java.math.BigInteger
 import kotlin.coroutines.experimental.buildIterator
 
@@ -22,29 +23,54 @@ object PermutationGenerator {
     internal inline fun <R> build(n: Int, r: Int, crossinline block: (IntArray) -> R): CombinatorialSequence<R> {
         val totalSize = permutations(n, r)
 
-        val iterator = buildIterator {
-            val indices = IntArray(n) { it }
-            val cycles = IntArray(r) { n - it }
-            loop@ while (true) {
-                yield(block(indices))
-                for (i in r - 1 downTo 0) {
-                    cycles[i]--
-                    if (cycles[i] == 0) {
-                        val first = indices[i]
-                        for (j in i until n - 1) {
-                            indices[j] = indices[j + 1]
-                        }
-                        indices[n - 1] = first
-                        cycles[i] = n - i
-                    } else {
-                        val j = n - cycles[i]
-                        val tmp = indices[i]
-                        indices[i] = indices[j]
-                        indices[j] = tmp
-                        continue@loop
+        val iterator = if (n == r) {
+            buildIterator {
+                val indices = IntArray(n) { it }
+                val lastIndex = n - 1
+                while (true) {
+                    yield(block(indices))
+                    var i = lastIndex
+                    while (i > 0 && indices[i - 1] >= indices[i]) {
+                        i--
+                    }
+                    if (i <= 0) {
+                        break
+                    }
+                    var j = lastIndex
+                    while (indices[j] <= indices[i - 1]) {
+                        j--
+                    }
+                    indices.swap(i - 1, j)
+                    j = lastIndex
+                    while (i < j) {
+                        indices.swap(i, j)
+                        i++
+                        j--
                     }
                 }
-                break
+            }
+        } else {
+            buildIterator {
+                val indices = IntArray(n) { it }
+                val cycles = IntArray(r) { n - it }
+                loop@ while (true) {
+                    yield(block(indices))
+                    for (i in r - 1 downTo 0) {
+                        cycles[i]--
+                        if (cycles[i] == 0) {
+                            val first = indices[i]
+                            for (j in i until n - 1) {
+                                indices[j] = indices[j + 1]
+                            }
+                            indices[n - 1] = first
+                            cycles[i] = n - i
+                        } else {
+                            indices.swap(i, n - cycles[i])
+                            continue@loop
+                        }
+                    }
+                    break
+                }
             }
         }
 

@@ -36,3 +36,9 @@ internal inline fun <reified R> IntArray.mapToArray(arraySize: Int = size, trans
     @Suppress("UNCHECKED_CAST")
     return result as Array<R>
 }
+
+@Suppress("NOTHING_TO_INLINE")
+@PublishedApi
+internal inline fun IntArray.swap(i: Int, j: Int) {
+    this[i] = this[j].also { this[j] = this[i] }
+}

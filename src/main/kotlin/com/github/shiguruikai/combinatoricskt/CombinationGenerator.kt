@@ -27,9 +27,9 @@ object CombinationGenerator {
                 yield(block(indices))
                 for (i in r - 1 downTo 0) {
                     if (indices[i] != i + n - r) {
-                        indices[i]++
-                        for (j in i + 1 until r) {
-                            indices[j] = indices[j - 1] + 1
+                        var v = indices[i]
+                        for (j in i until r) {
+                            indices[j] = ++v
                         }
                         continue@loop
                     }

@@ -28,9 +28,9 @@ object CombinationWithRepetitionGenerator {
                 yield(block(indices))
                 for (i in r - 1 downTo 0) {
                     if (indices[i] != n - 1) {
-                        indices[i]++
-                        for (j in i + 1 until r) {
-                            indices[j] = indices[i]
+                        val v = indices[i] + 1
+                        for (j in i until r) {
+                            indices[j] = v
                         }
                         continue@loop
                     }
