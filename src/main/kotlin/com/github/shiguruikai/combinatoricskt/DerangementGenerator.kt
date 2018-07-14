@@ -56,7 +56,7 @@ object DerangementGenerator {
     /**
      * Returns a sequence of derangement of n.
      *
-     * @throws [IllegalArgumentException] if [n] is negative.
+     * @throws IllegalArgumentException if [n] is negative.
      */
     @JvmStatic
     fun indices(n: Int): CombinatorialSequence<IntArray> {
