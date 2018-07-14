@@ -21,7 +21,7 @@ Iterable または Array から以下のシーケンスを生成する。
 Gradle:
 
 ```gradle 
-implementation 'com.github.shiguruikai:combinatoricskt:1.1.0'
+implementation 'com.github.shiguruikai:combinatoricskt:1.2.0'
 ```
 
 Maven:
@@ -30,7 +30,7 @@ Maven:
 <dependency>
     <groupId>com.github.shiguruikai</groupId>
     <artifactId>combinatoricskt</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 

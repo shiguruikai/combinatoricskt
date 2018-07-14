@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.2.0 (2018-07-15)
+- シーケンス生成のパフォーマンスが向上（ `buildIterator` で生成した `Iterator` を自前で作るようにしたため）
+
 ## 1.1.0 (2018-07-14)
 
 - 完全順列を生成するクラス `DerangementGenerator` を追加
