@@ -54,7 +54,7 @@ object DerangementGenerator {
     }
 
     /**
-     * Returns a sequence of derangement of n.
+     * Returns a sequence of derangement of [n] elements.
      *
      * @throws IllegalArgumentException if [n] is negative.
      */
