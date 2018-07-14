@@ -1,8 +1,8 @@
 /*
  * Copyright 2018 shiguruikai
  *
- * Released under the MIT License.
- * see https://github.com/shiguruikai/combinatoricskt/blob/master/LICENSE
+ * Released under the MIT license
+ * https://github.com/shiguruikai/combinatoricskt/blob/master/LICENSE
  */
 
 @file:JvmName("Itertools")
