@@ -10,7 +10,6 @@ package com.github.shiguruikai.combinatoricskt
 import com.github.shiguruikai.combinatoricskt.internal.combinationsWithRepetition
 import com.github.shiguruikai.combinatoricskt.internal.mapToArray
 import java.math.BigInteger
-import kotlin.coroutines.experimental.buildIterator
 
 /**
  * The class [CombinationWithRepetitionGenerator] contains methods for generating combinations with repetition.
@@ -22,6 +21,30 @@ object CombinationWithRepetitionGenerator {
                                   crossinline block: (IntArray) -> R): CombinatorialSequence<R> {
         val totalSize = combinationsWithRepetition(n, r)
 
+        val iterator = object : Iterator<R> {
+            val indices = IntArray(r)
+            var hasNext = true
+
+            override fun hasNext(): Boolean = hasNext
+
+            override fun next(): R {
+                if (!hasNext()) throw NoSuchElementException()
+                val nextValue = block(indices)
+                for (i in r - 1 downTo 0) {
+                    if (indices[i] != n - 1) {
+                        val v = indices[i] + 1
+                        for (j in i until r) {
+                            indices[j] = v
+                        }
+                        return nextValue
+                    }
+                }
+                hasNext = false
+                return nextValue
+            }
+        }
+
+        /* SequenceBuilderIterator is not good performance
         val iterator = buildIterator {
             val indices = IntArray(r)
             loop@ while (true) {
@@ -38,6 +61,7 @@ object CombinationWithRepetitionGenerator {
                 break
             }
         }
+        */
 
         return CombinatorialSequence(totalSize, iterator)
     }

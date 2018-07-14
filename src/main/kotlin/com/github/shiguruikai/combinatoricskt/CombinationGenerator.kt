@@ -10,7 +10,6 @@ package com.github.shiguruikai.combinatoricskt
 import com.github.shiguruikai.combinatoricskt.internal.combinations
 import com.github.shiguruikai.combinatoricskt.internal.mapToArray
 import java.math.BigInteger
-import kotlin.coroutines.experimental.buildIterator
 
 /**
  * The class [CombinationGenerator] contains methods for generating combinations.
@@ -21,6 +20,30 @@ object CombinationGenerator {
     internal inline fun <R> build(n: Int, r: Int, crossinline block: (IntArray) -> R): CombinatorialSequence<R> {
         val totalSize = combinations(n, r)
 
+        val iterator = object : Iterator<R> {
+            val indices = IntArray(r) { it }
+            var hasNext = true
+
+            override fun hasNext(): Boolean = hasNext
+
+            override fun next(): R {
+                if (!hasNext()) throw NoSuchElementException()
+                val nextValue = block(indices)
+                for (i in r - 1 downTo 0) {
+                    if (indices[i] != i + n - r) {
+                        var v = indices[i]
+                        for (j in i until r) {
+                            indices[j] = ++v
+                        }
+                        return nextValue
+                    }
+                }
+                hasNext = false
+                return nextValue
+            }
+        }
+
+        /* SequenceBuilderIterator is not good performance
         val iterator = buildIterator {
             val indices = IntArray(r) { it }
             loop@ while (true) {
@@ -37,6 +60,7 @@ object CombinationGenerator {
                 break
             }
         }
+        */
 
         return CombinatorialSequence(totalSize, iterator)
     }

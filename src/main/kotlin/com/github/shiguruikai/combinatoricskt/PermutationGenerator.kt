@@ -12,7 +12,6 @@ import com.github.shiguruikai.combinatoricskt.internal.mapToList
 import com.github.shiguruikai.combinatoricskt.internal.permutations
 import com.github.shiguruikai.combinatoricskt.internal.swap
 import java.math.BigInteger
-import kotlin.coroutines.experimental.buildIterator
 
 /**
  * The class [PermutationGenerator] contains methods for generating permutations.
@@ -24,6 +23,40 @@ object PermutationGenerator {
         val totalSize = permutations(n, r)
 
         val iterator = if (n == r) {
+            object : Iterator<R> {
+                val indices = IntArray(n) { it }
+                val lastIndex = n - 1
+                var hasNext = true
+
+                override fun hasNext(): Boolean = hasNext
+
+                override fun next(): R {
+                    if (!hasNext()) throw NoSuchElementException()
+                    val nextValue = block(indices)
+                    var i = lastIndex
+                    while (i > 0 && indices[i - 1] >= indices[i]) {
+                        i--
+                    }
+                    if (i <= 0) {
+                        hasNext = false
+                        return nextValue
+                    }
+                    var j = lastIndex
+                    while (indices[j] <= indices[i - 1]) {
+                        j--
+                    }
+                    indices.swap(i - 1, j)
+                    j = lastIndex
+                    while (i < j) {
+                        indices.swap(i, j)
+                        i++
+                        j--
+                    }
+                    return nextValue
+                }
+            }
+
+            /* SequenceBuilderIterator is not good performance
             buildIterator {
                 val indices = IntArray(n) { it }
                 val lastIndex = n - 1
@@ -49,7 +82,38 @@ object PermutationGenerator {
                     }
                 }
             }
+            */
         } else {
+            object : Iterator<R> {
+                val indices = IntArray(n) { it }
+                val cycles = IntArray(r) { n - it }
+                var hasNext = true
+
+                override fun hasNext(): Boolean = hasNext
+
+                override fun next(): R {
+                    if (!hasNext()) throw NoSuchElementException()
+                    val nextValue = block(indices)
+                    for (i in r - 1 downTo 0) {
+                        cycles[i]--
+                        if (cycles[i] == 0) {
+                            val first = indices[i]
+                            for (j in i until n - 1) {
+                                indices[j] = indices[j + 1]
+                            }
+                            indices[n - 1] = first
+                            cycles[i] = n - i
+                        } else {
+                            indices.swap(i, n - cycles[i])
+                            return nextValue
+                        }
+                    }
+                    hasNext = false
+                    return nextValue
+                }
+            }
+
+            /* SequenceBuilderIterator is not good performance
             buildIterator {
                 val indices = IntArray(n) { it }
                 val cycles = IntArray(r) { n - it }
@@ -72,6 +136,7 @@ object PermutationGenerator {
                     break
                 }
             }
+            */
         }
 
         return CombinatorialSequence(totalSize, iterator)

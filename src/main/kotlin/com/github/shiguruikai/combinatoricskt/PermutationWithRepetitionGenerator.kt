@@ -9,7 +9,6 @@ package com.github.shiguruikai.combinatoricskt
 
 import com.github.shiguruikai.combinatoricskt.internal.mapToArray
 import java.math.BigInteger
-import kotlin.coroutines.experimental.buildIterator
 
 /**
  * The class [PermutationWithRepetitionGenerator] contains methods for generating permutations with repetition.
@@ -21,6 +20,53 @@ object PermutationWithRepetitionGenerator {
                                   crossinline block: (IntArray) -> R): CombinatorialSequence<R> {
         val totalSize = n.toBigInteger().pow(r)
 
+        val iterator = if (totalSize <= Long.MAX_VALUE.toBigInteger()) {
+            object : Iterator<R> {
+                val indices = IntArray(r)
+                var t = totalSize.longValueExact()
+
+                override fun hasNext(): Boolean = t > 0
+
+                override fun next(): R {
+                    if (!hasNext()) throw NoSuchElementException()
+                    t--
+                    val nextValue = block(indices)
+                    for (i in r - 1 downTo 0) {
+                        if (indices[i] >= n - 1) {
+                            indices[i] = 0
+                        } else {
+                            indices[i]++
+                            break
+                        }
+                    }
+                    return nextValue
+                }
+            }
+        } else {
+            object : Iterator<R> {
+                val indices = IntArray(r)
+                var t = totalSize
+
+                override fun hasNext(): Boolean = t > BigInteger.ZERO
+
+                override fun next(): R {
+                    if (!hasNext()) throw NoSuchElementException()
+                    t--
+                    val nextValue = block(indices)
+                    for (i in r - 1 downTo 0) {
+                        if (indices[i] >= n - 1) {
+                            indices[i] = 0
+                        } else {
+                            indices[i]++
+                            break
+                        }
+                    }
+                    return nextValue
+                }
+            }
+        }
+
+        /* SequenceBuilderIterator is not good performance
         val condition = try {
             var t = totalSize.longValueExact();
             { t-- > 0 }
@@ -43,6 +89,7 @@ object PermutationWithRepetitionGenerator {
                 }
             }
         }
+        */
 
         return CombinatorialSequence(totalSize, iterator)
     }

@@ -9,7 +9,6 @@ package com.github.shiguruikai.combinatoricskt
 
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.coroutines.experimental.buildIterator
 
 /**
  * The class [PowerSetGenerator] contains methods for generating power set.
@@ -24,6 +23,36 @@ object PowerSetGenerator {
     ): CombinatorialSequence<R> {
         val totalSize = 2.toBigInteger().pow(poolSize)
 
+        val iterator = object : Iterator<R> {
+            val bitLength = totalSize.bitLength()
+            val bitSet = BitSet(bitLength)
+            val lastIndex = bitLength - 1
+            var hasNext = true
+
+            override fun hasNext(): Boolean = hasNext
+
+            override fun next(): R {
+                if (!hasNext()) throw NoSuchElementException()
+                val acc = initial(bitSet.cardinality())
+                var i = bitSet.nextSetBit(0)
+                var index = 0
+                while (i != -1) {
+                    operation(index++, acc, i)
+                    i = bitSet.nextSetBit(i + 1)
+                }
+
+                i = bitSet.nextClearBit(0)
+                if (i >= lastIndex) {
+                    hasNext = false
+                } else {
+                    bitSet.flip(0, i + 1)
+                }
+
+                return acc
+            }
+        }
+
+        /* SequenceBuilderIterator is not good performance
         val iterator = buildIterator {
             val bitLength = totalSize.bitLength()
             val bitSet = BitSet(bitLength)
@@ -46,6 +75,7 @@ object PowerSetGenerator {
                 bitSet.flip(0, i + 1)
             }
         }
+        */
 
         return CombinatorialSequence(totalSize, iterator)
     }

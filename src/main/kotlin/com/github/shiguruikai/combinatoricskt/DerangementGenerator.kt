@@ -11,7 +11,6 @@ import com.github.shiguruikai.combinatoricskt.internal.mapToArray
 import com.github.shiguruikai.combinatoricskt.internal.subFactorial
 import com.github.shiguruikai.combinatoricskt.internal.swap
 import java.math.BigInteger
-import kotlin.coroutines.experimental.buildIterator
 
 /**
  * The class [DerangementGenerator] contains methods for generating derangement.
@@ -22,6 +21,53 @@ object DerangementGenerator {
     internal inline fun <R> build(n: Int, crossinline block: (IntArray) -> R): CombinatorialSequence<R> {
         val totalSize = subFactorial(n)
 
+        val iterator = object : Iterator<R> {
+            val indices = IntArray(n) { it }
+            val lastIndex = n - 1
+            var hasNext = true
+
+            fun nextPerm() {
+                var i = lastIndex
+                while (i > 0 && indices[i - 1] >= indices[i]) {
+                    i--
+                }
+                if (i <= 0) {
+                    hasNext = false
+                    return
+                }
+                var j = lastIndex
+                while (indices[j] <= indices[i - 1]) {
+                    j--
+                }
+                indices.swap(i - 1, j)
+                j = lastIndex
+                while (i < j) {
+                    indices.swap(i, j)
+                    i++
+                    j--
+                }
+            }
+
+            override fun hasNext(): Boolean {
+                while (hasNext) {
+                    var i = 0
+                    if (indices.all { it != i++ }) {
+                        break
+                    }
+                    nextPerm()
+                }
+                return hasNext
+            }
+
+            override fun next(): R {
+                if (!hasNext()) throw NoSuchElementException()
+                val nextValue = block(indices)
+                nextPerm()
+                return nextValue
+            }
+        }
+
+        /* SequenceBuilderIterator is not good performance
         val iterator = buildIterator {
             val indices = IntArray(n) { it }
             val lastIndex = n - 1
@@ -50,6 +96,8 @@ object DerangementGenerator {
                 }
             }
         }
+        */
+
         return CombinatorialSequence(totalSize, iterator)
     }
 
