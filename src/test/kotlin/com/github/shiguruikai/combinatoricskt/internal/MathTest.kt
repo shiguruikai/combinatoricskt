@@ -5,16 +5,13 @@
  * see https://github.com/shiguruikai/combinatoricskt/blob/master/LICENSE
  */
 
-package com.github.shiguruikai.combinatoricskt
+package com.github.shiguruikai.combinatoricskt.internal
 
-import com.github.shiguruikai.combinatoricskt.internal.combinations
-import com.github.shiguruikai.combinatoricskt.internal.combinationsWithRepetition
-import com.github.shiguruikai.combinatoricskt.internal.factorial
-import com.github.shiguruikai.combinatoricskt.internal.permutations
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.math.BigInteger
 
 internal class MathTest {
 
@@ -86,6 +83,30 @@ internal class MathTest {
         val expectedArray = intArrayOf(1, 10, 55, 220, 715, 2002, 5005, 11440, 24310, 48620)
         expectedArray.forEachIndexed { i: Int, expected: Int ->
             assertEquals(expected, combinationsWithRepetition(expectedArray.size, i).intValueExact())
+        }
+    }
+
+    @Test
+    fun test_subFactorial() {
+
+        fun subFact(n: Int): BigInteger = when (n) {
+            0 -> BigInteger.ONE
+            1 -> BigInteger.ZERO
+            2 -> BigInteger.ONE
+            else -> (n - 1).toBigInteger() * (subFact(n - 1) + subFact(n - 2))
+        }
+
+        for (n in -2..6) {
+            if (n < 0) {
+                assertThrows<IllegalArgumentException> { subFactorial(n) }
+            } else {
+                assertEquals(subFact(n), subFactorial(n))
+            }
+        }
+
+        val expectedArray = intArrayOf(1, 0, 1, 2, 9, 44, 265, 1854, 14833, 133496)
+        expectedArray.forEachIndexed { i: Int, expected: Int ->
+            assertEquals(expected, subFactorial(i).intValueExact())
         }
     }
 }

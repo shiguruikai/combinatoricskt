@@ -17,6 +17,10 @@ fun <T> Iterable<T>.permutations(length: Int? = null): CombinatorialSequence<Lis
 fun <T> Iterable<T>.permutationsWithRepetition(length: Int): CombinatorialSequence<List<T>> =
         PermutationWithRepetitionGenerator.generate(this, length = length)
 
+/** @see DerangementGenerator */
+fun <T> Iterable<T>.derangements(): CombinatorialSequence<List<T>> =
+        DerangementGenerator.generate(this)
+
 /** @see CombinationGenerator */
 fun <T> Iterable<T>.combinations(length: Int): CombinatorialSequence<List<T>> =
         CombinationGenerator.generate(this, length)
@@ -40,6 +44,10 @@ inline fun <reified T> Array<T>.permutations(length: Int? = null): Combinatorial
 /** @see PermutationWithRepetitionGenerator */
 inline fun <reified T> Array<T>.permutationsWithRepetition(length: Int): CombinatorialSequence<Array<T>> =
         PermutationWithRepetitionGenerator.generate(this, length = length)
+
+/** @see DerangementGenerator */
+inline fun <reified T> Array<T>.derangements(): CombinatorialSequence<Array<T>> =
+        DerangementGenerator.generate(this)
 
 /** @see CombinationGenerator */
 inline fun <reified T> Array<T>.combinations(length: Int): CombinatorialSequence<Array<T>> =

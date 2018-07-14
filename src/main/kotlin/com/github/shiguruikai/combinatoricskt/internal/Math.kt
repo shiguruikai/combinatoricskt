@@ -36,6 +36,20 @@ internal fun combinationsWithRepetition(n: Int, r: Int): BigInteger {
     return factorialHelper(n + r - 1) / factorialHelper(r) / factorialHelper(n - 1)
 }
 
+@PublishedApi
+internal fun subFactorial(n: Int): BigInteger {
+    require(n >= 0) { "n must be non-negative, was $n" }
+    if (n == 0) return BigInteger.ONE
+    var prev = BigInteger.ONE
+    var acc = BigInteger.ZERO
+    for (i in 2..n) {
+        val next = (i - 1).toBigInteger() * (acc + prev)
+        prev = acc
+        acc = next
+    }
+    return acc
+}
+
 private fun factorialHelper(n: Int): BigInteger {
     var acc = BigInteger.ONE
     for (i in 2..n) {
