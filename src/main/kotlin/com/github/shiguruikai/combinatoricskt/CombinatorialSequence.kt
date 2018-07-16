@@ -23,7 +23,7 @@ import java.util.stream.StreamSupport
  * @see kotlin.sequences.Sequence
  * @see kotlin.sequences.constrainOnce
  */
-class CombinatorialSequence<T>(
+class CombinatorialSequence<out T>(
         val totalSize: BigInteger,
         sequence: Sequence<T>
 ) : Sequence<T> by sequence.constrainOnce() {
@@ -51,7 +51,7 @@ class CombinatorialSequence<T>(
      *
      * The operation is _terminal_.
      */
-    fun toMutableList(): MutableList<T> = if (totalSize <= MAX_ARRAY_SIZE) {
+    fun toMutableList(): MutableList<out T> = if (totalSize <= MAX_ARRAY_SIZE) {
         toCollection(ArrayList(totalSize.intValueExact()))
     } else {
         toCollection(LinkedList())
@@ -60,7 +60,7 @@ class CombinatorialSequence<T>(
     /**
      * @see [kotlin.streams.asStream]
      */
-    fun asStream(): Stream<T> = if (totalSize <= Long.MAX_VALUE.toBigInteger()) {
+    fun asStream(): Stream<out T> = if (totalSize <= Long.MAX_VALUE.toBigInteger()) {
         StreamSupport.stream(Spliterators.spliterator(
                 iterator(), totalSize.longValueExact(), Spliterator.ORDERED), false)
     } else {
