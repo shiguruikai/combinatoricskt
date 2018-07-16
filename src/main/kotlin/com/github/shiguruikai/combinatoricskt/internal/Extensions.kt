@@ -12,29 +12,54 @@ internal operator fun <T> List<T>.times(n: Int): List<T> {
     if (n <= 0) return emptyList()
     if (n == 1) return this
 
-    val result = toMutableList()
-    repeat(n - 1) {
+    val newSize = Math.multiplyExact(size, n)
+    val result = ArrayList<T>(newSize)
+    repeat(n) {
         result.addAll(this)
     }
     return result
 }
 
-internal inline fun <R> IntArray.mapToList(listSize: Int = size, transform: (Int) -> R): List<R> {
-    val result = ArrayList<R>(listSize)
-    repeat(listSize) {
+@PublishedApi
+internal operator fun IntArray.times(n: Int): IntArray {
+    if (n <= 0) return intArrayOf()
+    if (n == 1) return this
+
+    val newSize = Math.multiplyExact(size, n)
+    val result = IntArray(newSize)
+    repeat(n) {
+        System.arraycopy(this, 0, result, size * it, size)
+    }
+    return result
+}
+
+@PublishedApi
+internal inline fun <R> IntArray.mapToList(newSize: Int = size, transform: (Int) -> R): List<R> {
+    val result = ArrayList<R>(newSize)
+    repeat(newSize) {
         result += transform(this[it])
     }
     return result
 }
 
 @PublishedApi
-internal inline fun <reified R> IntArray.mapToArray(arraySize: Int = size, transform: (Int) -> R): Array<R> {
-    val result = arrayOfNulls<R>(arraySize)
-    repeat(arraySize) {
+internal inline fun <reified R> IntArray.mapToArray(newSize: Int = size, transform: (Int) -> R): Array<R> {
+    val result = arrayOfNulls<R>(newSize)
+    repeat(newSize) {
         result[it] = transform(this[it])
     }
     @Suppress("UNCHECKED_CAST")
     return result as Array<R>
+}
+
+@PublishedApi
+internal inline fun <reified T> Array<out T>.mapToArray(newSize: Int = size, transform: (T) -> T): Array<T> {
+    val result = arrayOfNulls<T>(newSize)
+    repeat(newSize) {
+        result[it] = transform(this[it])
+    }
+    @Suppress("UNCHECKED_CAST")
+    return result as Array<T>
 }
 
 @Suppress("NOTHING_TO_INLINE")
