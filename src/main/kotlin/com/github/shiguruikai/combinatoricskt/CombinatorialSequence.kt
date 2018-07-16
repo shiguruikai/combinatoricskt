@@ -31,7 +31,7 @@ class CombinatorialSequence<T>(
     /**
      * Construct from iterator.
      */
-    constructor(size: BigInteger, iterator: Iterator<T>) : this(size, iterator.asSequence())
+    constructor(totalSize: BigInteger, iterator: Iterator<T>) : this(totalSize, iterator.asSequence())
 
     /**
      * Returns a [List] containing all elements.
