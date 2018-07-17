@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.0 (2018-07-18)
+- `CombinatorialSequence` の型パラメータを共変に変更
+- `CartesianProductGenerator` の変更点
+    - `repeat` に巨大な数を指定したときなどでオーバーフローしたとき例外を発生させる
+    - パフォーマンスが向上
+
 ## 1.2.0 (2018-07-15)
 - シーケンス生成のパフォーマンスが向上（ `buildIterator` で生成した `Iterator` を自前で作るようにしたため）
 
