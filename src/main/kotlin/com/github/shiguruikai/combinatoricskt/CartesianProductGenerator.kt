@@ -16,10 +16,9 @@ import java.math.BigInteger
  */
 object CartesianProductGenerator {
 
-    @PublishedApi
-    internal inline fun <R> build(sizes: IntArray,
-                                  repeat: Int,
-                                  crossinline transform: (IntArray) -> R): CombinatorialSequence<R> {
+    private inline fun <R> build(sizes: IntArray,
+                                 repeat: Int,
+                                 crossinline transform: (IntArray) -> R): CombinatorialSequence<R> {
         val totalSize = sizes.fold(BigInteger.ONE) { acc, size -> acc * size.toBigInteger() }.pow(repeat)
 
         val iterator = object : Iterator<R> {
@@ -34,10 +33,10 @@ object CartesianProductGenerator {
                 if (!hasNext()) throw NoSuchElementException()
                 val nextValue = transform(indices)
                 for (i in lastIndex downTo 0) {
-                    indices[i]++
-                    if (indices[i] >= dimensions[i]) {
+                    if (indices[i] >= dimensions[i] - 1) {
                         indices[i] = 0
                     } else {
+                        indices[i]++
                         return nextValue
                     }
                 }
@@ -92,7 +91,7 @@ object CartesianProductGenerator {
         }
 
         val sizes = mutableListOf<Int>()
-        val pools = iterables.map {
+        val pools = iterables.mapToArray {
             it.toList().also {
                 if (it.isEmpty()) {
                     return CombinatorialSequence(BigInteger.ZERO, emptySequence())
@@ -101,24 +100,22 @@ object CartesianProductGenerator {
             }
         }
 
-        val transform: (IntArray) -> List<T> = if (repeat == 1) {
-            { indices: IntArray ->
+        return if (repeat == 1) {
+            build(sizes.toIntArray(), repeat) { indices ->
                 indices.mapIndexed { index, it -> pools[index][it] }
             }
         } else {
-            { indices: IntArray ->
+            build(sizes.toIntArray(), repeat) { indices ->
                 var index = 0
                 indices.map {
-                    pools[index][it].also {
-                        if (++index >= pools.size) {
+                    pools[index++][it].also {
+                        if (index >= pools.size) {
                             index = 0
                         }
                     }
                 }
             }
         }
-
-        return build(sizes.toIntArray(), repeat, transform)
     }
 
     /**
@@ -136,33 +133,21 @@ object CartesianProductGenerator {
             return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyArray()))
         }
 
-        val sizes = mutableListOf<Int>()
-        val pools = arrays.mapToArray {
+        var total = BigInteger.ONE
+        val pools = arrays.map {
             if (it.isEmpty()) {
                 return CombinatorialSequence(BigInteger.ZERO, emptySequence())
             }
-            sizes += it.size
-            it.copyOf()
+            total *= it.size.toBigInteger()
+            it.copyOf().asSequence()
+        } * repeat
+        total = total.pow(repeat)
+
+        var sequence = sequenceOf(emptyArray<T>())
+        pools.forEach { pool ->
+            sequence = sequence.flatMap { a -> pool.map { b -> a + b } }
         }
 
-        val transform: (IntArray) -> Array<T> = if (repeat == 1) {
-            { indices: IntArray ->
-                var index = 0
-                indices.mapToArray { pools[index++][it] }
-            }
-        } else {
-            { indices: IntArray ->
-                var index = 0
-                indices.mapToArray {
-                    pools[index][it].also {
-                        if (++index >= pools.size) {
-                            index = 0
-                        }
-                    }
-                }
-            }
-        }
-
-        return build(sizes.toIntArray(), repeat, transform)
+        return CombinatorialSequence(total, sequence)
     }
 }
