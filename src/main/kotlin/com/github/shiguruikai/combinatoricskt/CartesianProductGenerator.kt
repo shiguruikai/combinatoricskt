@@ -7,6 +7,7 @@
 
 package com.github.shiguruikai.combinatoricskt
 
+import com.github.shiguruikai.combinatoricskt.internal.mapToArray
 import com.github.shiguruikai.combinatoricskt.internal.times
 import java.math.BigInteger
 
@@ -15,13 +16,46 @@ import java.math.BigInteger
  */
 object CartesianProductGenerator {
 
+    @PublishedApi
+    internal inline fun <R> build(sizes: IntArray,
+                                  repeat: Int,
+                                  crossinline transform: (IntArray) -> R): CombinatorialSequence<R> {
+        val totalSize = sizes.fold(BigInteger.ONE) { acc, size -> acc * size.toBigInteger() }.pow(repeat)
+
+        val iterator = object : Iterator<R> {
+            val dimensions = sizes * repeat
+            val indices = IntArray(dimensions.size)
+            val lastIndex = indices.lastIndex
+            var hasNext = true
+
+            override fun hasNext(): Boolean = hasNext
+
+            override fun next(): R {
+                if (!hasNext()) throw NoSuchElementException()
+                val nextValue = transform(indices)
+                for (i in lastIndex downTo 0) {
+                    indices[i]++
+                    if (indices[i] >= dimensions[i]) {
+                        indices[i] = 0
+                    } else {
+                        return nextValue
+                    }
+                }
+                hasNext = false
+                return nextValue
+            }
+        }
+
+        return CombinatorialSequence(totalSize, iterator)
+    }
+
     /**
      * Returns a sequence of cartesian product of [dimensions].
      *
      * To compute the cartesian product of [dimensions] with itself,
      * specify the number of repetitions with the [repeat] named argument.
      *
-     * @throws IllegalArgumentException if [repeat] is negative.
+     * @throws IllegalArgumentException if [repeat] is negative, or [dimensions] contains negative.
      */
     @JvmStatic
     fun indices(vararg dimensions: Int, repeat: Int = 1): CombinatorialSequence<IntArray> {
@@ -31,20 +65,14 @@ object CartesianProductGenerator {
             return CombinatorialSequence(BigInteger.ONE, sequenceOf(intArrayOf()))
         }
 
-        var total = BigInteger.ONE
-        val pools = dimensions.map { total *= it.toBigInteger(); IntArray(it) { it }.asSequence() } * repeat
-        total.pow(repeat)
-
-        if (total == BigInteger.ZERO) {
-            return CombinatorialSequence(BigInteger.ZERO, emptySequence())
+        dimensions.forEach {
+            require(it >= 0) { "dimensions must not contain negative, was ${dimensions.contentToString()}" }
+            if (it == 0) {
+                return CombinatorialSequence(BigInteger.ZERO, emptySequence())
+            }
         }
 
-        var sequence = sequenceOf(intArrayOf())
-        pools.forEach { pool ->
-            sequence = sequence.flatMap { a -> pool.map { b -> a + b } }
-        }
-
-        return CombinatorialSequence(total, sequence)
+        return build(dimensions.copyOf(), repeat) { it.copyOf() }
     }
 
     /**
@@ -63,20 +91,34 @@ object CartesianProductGenerator {
             return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyList()))
         }
 
-        var total = BigInteger.ONE
-        val pools = iterables.map { it.toList().also { total *= it.size.toBigInteger() }.asSequence() } * repeat
-        total = total.pow(repeat)
-
-        if (total == BigInteger.ZERO) {
-            return CombinatorialSequence(BigInteger.ZERO, emptySequence())
+        val sizes = mutableListOf<Int>()
+        val pools = iterables.map {
+            it.toList().also {
+                if (it.isEmpty()) {
+                    return CombinatorialSequence(BigInteger.ZERO, emptySequence())
+                }
+                sizes += it.size
+            }
         }
 
-        var sequence = sequenceOf(emptyList<T>())
-        pools.forEach { pool ->
-            sequence = sequence.flatMap { a -> pool.map { b -> a + b } }
+        val transform: (IntArray) -> List<T> = if (repeat == 1) {
+            { indices: IntArray ->
+                indices.mapIndexed { index, it -> pools[index][it] }
+            }
+        } else {
+            { indices: IntArray ->
+                var index = 0
+                indices.map {
+                    pools[index][it].also {
+                        if (++index >= pools.size) {
+                            index = 0
+                        }
+                    }
+                }
+            }
         }
 
-        return CombinatorialSequence(total, sequence)
+        return build(sizes.toIntArray(), repeat, transform)
     }
 
     /**
@@ -94,19 +136,33 @@ object CartesianProductGenerator {
             return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyArray()))
         }
 
-        var total = BigInteger.ONE
-        val pools = arrays.map { total *= it.size.toBigInteger(); it.copyOf().asSequence() } * repeat
-        total = total.pow(repeat)
-
-        if (total == BigInteger.ZERO) {
-            return CombinatorialSequence(BigInteger.ZERO, emptySequence())
+        val sizes = mutableListOf<Int>()
+        val pools = arrays.mapToArray {
+            if (it.isEmpty()) {
+                return CombinatorialSequence(BigInteger.ZERO, emptySequence())
+            }
+            sizes += it.size
+            it.copyOf()
         }
 
-        var sequence = sequenceOf(emptyArray<T>())
-        pools.forEach { pool ->
-            sequence = sequence.flatMap { a -> pool.map { b -> a + b } }
+        val transform: (IntArray) -> Array<T> = if (repeat == 1) {
+            { indices: IntArray ->
+                var index = 0
+                indices.mapToArray { pools[index++][it] }
+            }
+        } else {
+            { indices: IntArray ->
+                var index = 0
+                indices.mapToArray {
+                    pools[index][it].also {
+                        if (++index >= pools.size) {
+                            index = 0
+                        }
+                    }
+                }
+            }
         }
 
-        return CombinatorialSequence(total, sequence)
+        return build(sizes.toIntArray(), repeat, transform)
     }
 }
