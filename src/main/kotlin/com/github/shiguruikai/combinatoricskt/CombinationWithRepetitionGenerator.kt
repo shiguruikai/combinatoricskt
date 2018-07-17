@@ -18,7 +18,7 @@ object CombinationWithRepetitionGenerator {
 
     @PublishedApi
     internal inline fun <R> build(n: Int, r: Int,
-                                  crossinline block: (IntArray) -> R): CombinatorialSequence<R> {
+                                  crossinline transform: (IntArray) -> R): CombinatorialSequence<R> {
         val totalSize = combinationsWithRepetition(n, r)
 
         val iterator = object : Iterator<R> {
@@ -29,7 +29,7 @@ object CombinationWithRepetitionGenerator {
 
             override fun next(): R {
                 if (!hasNext()) throw NoSuchElementException()
-                val nextValue = block(indices)
+                val nextValue = transform(indices)
                 for (i in r - 1 downTo 0) {
                     if (indices[i] != n - 1) {
                         val v = indices[i] + 1
@@ -48,7 +48,7 @@ object CombinationWithRepetitionGenerator {
         val iterator = buildIterator {
             val indices = IntArray(r)
             loop@ while (true) {
-                yield(block(indices))
+                yield(transform(indices))
                 for (i in r - 1 downTo 0) {
                     if (indices[i] != n - 1) {
                         val v = indices[i] + 1

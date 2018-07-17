@@ -18,7 +18,8 @@ import java.math.BigInteger
 object DerangementGenerator {
 
     @PublishedApi
-    internal inline fun <R> build(n: Int, crossinline block: (IntArray) -> R): CombinatorialSequence<R> {
+    internal inline fun <R> build(n: Int,
+                                  crossinline transform: (IntArray) -> R): CombinatorialSequence<R> {
         val totalSize = subFactorial(n)
 
         val iterator = object : Iterator<R> {
@@ -61,7 +62,7 @@ object DerangementGenerator {
 
             override fun next(): R {
                 if (!hasNext()) throw NoSuchElementException()
-                val nextValue = block(indices)
+                val nextValue = transform(indices)
                 nextPerm()
                 return nextValue
             }
@@ -74,7 +75,7 @@ object DerangementGenerator {
             while (true) {
                 var i = 0
                 if (indices.all { it != i++ }) {
-                    yield(block(indices))
+                    yield(transform(indices))
                 }
                 i = lastIndex
                 while (i > 0 && indices[i - 1] >= indices[i]) {

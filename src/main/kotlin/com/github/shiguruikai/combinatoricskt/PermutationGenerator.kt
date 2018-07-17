@@ -19,7 +19,8 @@ import java.math.BigInteger
 object PermutationGenerator {
 
     @PublishedApi
-    internal inline fun <R> build(n: Int, r: Int, crossinline block: (IntArray) -> R): CombinatorialSequence<R> {
+    internal inline fun <R> build(n: Int, r: Int,
+                                  crossinline transform: (IntArray) -> R): CombinatorialSequence<R> {
         val totalSize = permutations(n, r)
 
         val iterator = if (n == r) {
@@ -32,7 +33,7 @@ object PermutationGenerator {
 
                 override fun next(): R {
                     if (!hasNext()) throw NoSuchElementException()
-                    val nextValue = block(indices)
+                    val nextValue = transform(indices)
                     var i = lastIndex
                     while (i > 0 && indices[i - 1] >= indices[i]) {
                         i--
@@ -61,7 +62,7 @@ object PermutationGenerator {
                 val indices = IntArray(n) { it }
                 val lastIndex = n - 1
                 while (true) {
-                    yield(block(indices))
+                    yield(transform(indices))
                     var i = lastIndex
                     while (i > 0 && indices[i - 1] >= indices[i]) {
                         i--
@@ -93,7 +94,7 @@ object PermutationGenerator {
 
                 override fun next(): R {
                     if (!hasNext()) throw NoSuchElementException()
-                    val nextValue = block(indices)
+                    val nextValue = transform(indices)
                     for (i in r - 1 downTo 0) {
                         cycles[i]--
                         if (cycles[i] == 0) {
@@ -118,7 +119,7 @@ object PermutationGenerator {
                 val indices = IntArray(n) { it }
                 val cycles = IntArray(r) { n - it }
                 loop@ while (true) {
-                    yield(block(indices))
+                    yield(transform(indices))
                     for (i in r - 1 downTo 0) {
                         cycles[i]--
                         if (cycles[i] == 0) {

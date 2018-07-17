@@ -19,7 +19,7 @@ object PowerSetGenerator {
     internal inline fun <R, T : R> build(
             poolSize: Int,
             crossinline initial: (size: Int) -> T,
-            crossinline operation: (index: Int, acc: T, poolIndex: Int) -> Unit
+            crossinline transform: (index: Int, acc: T, poolIndex: Int) -> Unit
     ): CombinatorialSequence<R> {
         val totalSize = 2.toBigInteger().pow(poolSize)
 
@@ -37,7 +37,7 @@ object PowerSetGenerator {
                 var i = bitSet.nextSetBit(0)
                 var index = 0
                 while (i != -1) {
-                    operation(index++, acc, i)
+                    transform(index++, acc, i)
                     i = bitSet.nextSetBit(i + 1)
                 }
 
@@ -63,7 +63,7 @@ object PowerSetGenerator {
                 var i = bitSet.nextSetBit(0)
                 var index = 0
                 while (i != -1) {
-                    operation(index++, acc, i)
+                    transform(index++, acc, i)
                     i = bitSet.nextSetBit(i + 1)
                 }
                 yield(acc)

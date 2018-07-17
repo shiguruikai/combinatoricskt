@@ -17,7 +17,8 @@ import java.math.BigInteger
 object CombinationGenerator {
 
     @PublishedApi
-    internal inline fun <R> build(n: Int, r: Int, crossinline block: (IntArray) -> R): CombinatorialSequence<R> {
+    internal inline fun <R> build(n: Int, r: Int,
+                                  crossinline transform: (IntArray) -> R): CombinatorialSequence<R> {
         val totalSize = combinations(n, r)
 
         val iterator = object : Iterator<R> {
@@ -28,7 +29,7 @@ object CombinationGenerator {
 
             override fun next(): R {
                 if (!hasNext()) throw NoSuchElementException()
-                val nextValue = block(indices)
+                val nextValue = transform(indices)
                 for (i in r - 1 downTo 0) {
                     if (indices[i] != i + n - r) {
                         var v = indices[i]
@@ -47,7 +48,7 @@ object CombinationGenerator {
         val iterator = buildIterator {
             val indices = IntArray(r) { it }
             loop@ while (true) {
-                yield(block(indices))
+                yield(transform(indices))
                 for (i in r - 1 downTo 0) {
                     if (indices[i] != i + n - r) {
                         var v = indices[i]

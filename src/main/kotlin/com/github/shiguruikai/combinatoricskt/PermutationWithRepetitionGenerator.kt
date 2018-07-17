@@ -17,7 +17,7 @@ object PermutationWithRepetitionGenerator {
 
     @PublishedApi
     internal inline fun <R> build(n: Int, r: Int,
-                                  crossinline block: (IntArray) -> R): CombinatorialSequence<R> {
+                                  crossinline transform: (IntArray) -> R): CombinatorialSequence<R> {
         val totalSize = n.toBigInteger().pow(r)
 
         val iterator = if (totalSize <= Long.MAX_VALUE.toBigInteger()) {
@@ -30,7 +30,7 @@ object PermutationWithRepetitionGenerator {
                 override fun next(): R {
                     if (!hasNext()) throw NoSuchElementException()
                     t--
-                    val nextValue = block(indices)
+                    val nextValue = transform(indices)
                     for (i in r - 1 downTo 0) {
                         if (indices[i] >= n - 1) {
                             indices[i] = 0
@@ -52,7 +52,7 @@ object PermutationWithRepetitionGenerator {
                 override fun next(): R {
                     if (!hasNext()) throw NoSuchElementException()
                     t--
-                    val nextValue = block(indices)
+                    val nextValue = transform(indices)
                     for (i in r - 1 downTo 0) {
                         if (indices[i] >= n - 1) {
                             indices[i] = 0
@@ -78,7 +78,7 @@ object PermutationWithRepetitionGenerator {
         val iterator = buildIterator {
             val indices = IntArray(r)
             while (condition()) {
-                yield(block(indices))
+                yield(transform(indices))
                 for (i in r - 1 downTo 0) {
                     if (indices[i] >= n - 1) {
                         indices[i] = 0
