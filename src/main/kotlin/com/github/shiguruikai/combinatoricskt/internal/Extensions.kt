@@ -53,13 +53,13 @@ internal inline fun <reified R> IntArray.mapToArray(newSize: Int = size, transfo
 }
 
 @PublishedApi
-internal inline fun <reified T> Array<out T>.mapToArray(newSize: Int = size, transform: (T) -> T): Array<T> {
-    val result = arrayOfNulls<T>(newSize)
+internal inline fun <reified R, T> Array<T>.mapToArray(newSize: Int = size, transform: (T) -> R): Array<R> {
+    val result = arrayOfNulls<R>(newSize)
     repeat(newSize) {
         result[it] = transform(this[it])
     }
     @Suppress("UNCHECKED_CAST")
-    return result as Array<T>
+    return result as Array<R>
 }
 
 @Suppress("NOTHING_TO_INLINE")
