@@ -1,2 +1,4 @@
 rootProject.name = 'combinatoricskt'
 
+// https://docs.gradle.org/4.9/userguide/publishing_maven.html#publishing_maven:deferred_configuration
+enableFeaturePreview('STABLE_PUBLISHING')
