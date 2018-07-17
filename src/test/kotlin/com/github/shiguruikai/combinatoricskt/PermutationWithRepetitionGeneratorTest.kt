@@ -62,7 +62,7 @@ internal class PermutationWithRepetitionGeneratorTest {
         expected.forEachIndexed { index, it ->
             assertEquals(it, array.toList().permutationsWithRepetition(index).toList().toString())
             assertEquals(it, array.permutationsWithRepetition(index).map { it.toList() }.toList().toString())
-            assertEquals(it, PermutationWithRepetitionGenerator.indices(array.size, index).map { it.map { array[it] } }.toList().toString())
+            assertEquals(it, PermutationWithRepetitionGenerator.indices(array.size, index).map { it.toList() }.toList().toString())
         }
 
         assertArrayEquals(

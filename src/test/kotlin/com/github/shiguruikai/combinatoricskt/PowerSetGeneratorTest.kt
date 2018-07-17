@@ -67,16 +67,15 @@ internal class PowerSetGeneratorTest {
         }
 
         // ソート順かつサイズ順で生成
-        fun <T> Iterable<T>.powerset2(): CombinatorialSequence<List<T>> {
+        fun <T> Iterable<T>.powerset2(): Sequence<List<T>> {
             val pool = toList()
-            val totalSize = 2.toBigInteger().pow(pool.size)
 
             var sequence: Sequence<List<T>> = emptySequence()
             for (r in 0..pool.size) {
                 sequence += pool.combinations(r)
             }
 
-            return CombinatorialSequence(totalSize, sequence)
+            return sequence
         }
 
         fun <T> Iterable<T>.powerset3(): Sequence<List<T>> {
@@ -102,7 +101,7 @@ internal class PowerSetGeneratorTest {
 
             val size = 2.toBigInteger().pow(v.size)
 
-            assertTrue(ps.totalSize == size && size == ps1.totalSize && size == ps2.totalSize)
+            assertTrue(ps.totalSize == size && size == ps1.totalSize)
             assertEquals(psList, ps1.toList())
             assertEquals(psList.sortedWith(comparator).sortedBy { it.size }, ps2.toList())
             assertEquals(psList, ps3.toList())

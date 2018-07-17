@@ -11,9 +11,9 @@ import com.github.shiguruikai.combinatoricskt.internal.combinations
 import com.github.shiguruikai.combinatoricskt.internal.combinationsWithRepetition
 import com.github.shiguruikai.combinatoricskt.internal.factorial
 import com.github.shiguruikai.combinatoricskt.internal.permutations
+import com.github.shiguruikai.combinatoricskt.internal.subFactorial
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -23,56 +23,30 @@ import java.util.*
 internal class CombinatoricsKtTest {
 
     @Test
-    @DisplayName("シーケンスのサイズが正しいかチェック")
+    @DisplayName("CombinatorialSequence の totalSize と実際のサイズが等しいかテスト")
     fun test_check_size() {
+        fun <T> CombinatorialSequence<T>.testCheckSize(expected: BigInteger) {
+            assertEquals(expected, totalSize)
+            assertEquals(expected, count().toBigInteger())
+        }
+
         val list = ('A'..'D').toList()
         for (n in list.indices) {
             val values = list.take(n)
             for (r in list.indices) {
-
-                values.permutationsWithRepetition(r).let {
-                    val size = n.toBigInteger().pow(r)
-                    assertTrue(it.count().toBigInteger() == size && size == it.totalSize)
-                }
-
-                values.permutations(r).let {
-                    val size = if (n >= 0 && r >= 0 && n >= r) permutations(n, r) else BigInteger.ZERO
-                    assertTrue(it.count().toBigInteger() == size && size == it.totalSize)
-                }
-
-                values.combinations(r).let {
-                    val size = if (n >= 0 && r >= 0 && n >= r) combinations(n, r) else BigInteger.ZERO
-                    assertTrue(it.count().toBigInteger() == size && size == it.totalSize)
-                }
-
-                values.combinationsWithRepetition(r).let {
-                    val size = when {
-                        n >= 1 && r >= 0 && (n != 0 || r != 0) -> combinationsWithRepetition(n, r)
-                        n >= 0 && r == 0 -> BigInteger.ONE
-                        else -> BigInteger.ZERO
-                    }
-                    assertTrue(it.count().toBigInteger() == size && size == it.totalSize)
-                }
-
-                values.cartesianProduct().let {
-                    val size = n.toBigInteger()
-                    assertTrue(it.count().toBigInteger() == size && size == it.totalSize)
-                }
-
-                values.cartesianProduct(values).let {
-                    val size = (n * n).toBigInteger()
-                    assertTrue(it.count().toBigInteger() == size && size == it.totalSize)
-                }
-
-                values.cartesianProduct(values, repeat = r).let {
-                    val size = (n * n).toBigInteger().pow(r)
-                    assertTrue(it.count().toBigInteger() == size && size == it.totalSize)
-                }
-
-                values.powerset().let {
-                    val size = BigInteger.TWO.pow(n)
-                    assertTrue(it.count().toBigInteger() == size && size == it.totalSize)
-                }
+                values.permutations(r).testCheckSize(if (n >= 0 && r >= 0 && n >= r) permutations(n, r) else BigInteger.ZERO)
+                values.permutationsWithRepetition(r).testCheckSize(n.toBigInteger().pow(r))
+                values.derangements().testCheckSize(subFactorial(n))
+                values.combinations(r).testCheckSize(if (n >= 0 && r >= 0 && n >= r) combinations(n, r) else BigInteger.ZERO)
+                values.combinationsWithRepetition(r).testCheckSize(when {
+                    n >= 1 && r >= 0 -> combinationsWithRepetition(n, r)
+                    r == 0 -> BigInteger.ONE
+                    else -> BigInteger.ZERO
+                })
+                values.cartesianProduct().testCheckSize(n.toBigInteger())
+                values.cartesianProduct(values).testCheckSize((n * n).toBigInteger())
+                values.cartesianProduct(values, repeat = r).testCheckSize((n * n).toBigInteger().pow(r))
+                values.powerset().testCheckSize(BigInteger.TWO.pow(n))
             }
         }
     }
@@ -128,7 +102,7 @@ internal class CombinatoricsKtTest {
     }
 
     @Test
-    @DisplayName("シークエンスの再消費で IllegalStateException が発生するかテスト")
+    @DisplayName("Sequence の再消費で IllegalStateException が発生するかテスト")
     fun test_sequence_can_be_consumed_only_once() {
         fun <T> Sequence<T>.testReuse() {
             //assertTrue(this is kotlin.sequences.ConstrainedOnceSequence)
@@ -141,11 +115,37 @@ internal class CombinatoricsKtTest {
 
         range.permutations(n).testReuse()
         range.permutationsWithRepetition(n).testReuse()
+        range.derangements().testReuse()
         range.combinations(n).testReuse()
         range.combinationsWithRepetition(n).testReuse()
         range.cartesianProduct().testReuse()
         range.cartesianProduct(range).testReuse()
         range.cartesianProduct(range, repeat = n).testReuse()
         range.powerset().testReuse()
+    }
+
+    @Test
+    @DisplayName("次の要素がない Iterator で next() を呼んだとき NoSuchElementException が発生するかテスト")
+    fun test_iterator() {
+        fun <T> CombinatorialSequence<T>.testIterator() {
+            val iterator = iterator()
+            while (iterator.hasNext()) {
+                iterator.next()
+            }
+            assertThrows<NoSuchElementException> { iterator.next() }
+        }
+
+        for (n in 0..4) {
+            for (r in 0..4) {
+                PermutationGenerator.indices(n, r).testIterator()
+                PermutationWithRepetitionGenerator.indices(n, r).testIterator()
+                DerangementGenerator.indices(n).testIterator()
+                CombinationGenerator.indices(n, r).testIterator()
+                CombinationWithRepetitionGenerator.indices(n, r).testIterator()
+                CartesianProductGenerator.indices(n, r).testIterator()
+                CartesianProductGenerator.indices(n, r, repeat = 2).testIterator()
+                PowerSetGenerator.indices(n).testIterator()
+            }
+        }
     }
 }
