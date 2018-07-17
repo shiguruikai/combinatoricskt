@@ -105,21 +105,13 @@ The indices method generate the indices sequence of IntArray.
 Example:
 
 ```kotlin 
-val array = arrayOf('a', 'b', 'c')
-
-PermutationGenerator.indices(n = 3, r = 2)
-        .map { indices: IntArray ->
-            indices.map { index -> array[index] }
-        }
-        .forEach {
-            println(it)
-        }
-// [a, b]
-// [a, c]
-// [b, a]
-// [b, c]
-// [c, a]
-// [c, b]
+PermutationGenerator.indices(n = 3, r = 2).map { it.contentToString() }.forEach(::println)
+// [0, 1]
+// [0, 2]
+// [1, 0]
+// [1, 2]
+// [2, 0]
+// [2, 1]
 ```
 
 ## Permutations
