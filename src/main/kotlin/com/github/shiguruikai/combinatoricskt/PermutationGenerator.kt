@@ -56,34 +56,6 @@ object PermutationGenerator {
                     return nextValue
                 }
             }
-
-            /* SequenceBuilderIterator is not good performance
-            buildIterator {
-                val indices = IntArray(n) { it }
-                val lastIndex = n - 1
-                while (true) {
-                    yield(transform(indices))
-                    var i = lastIndex
-                    while (i > 0 && indices[i - 1] >= indices[i]) {
-                        i--
-                    }
-                    if (i <= 0) {
-                        break
-                    }
-                    var j = lastIndex
-                    while (indices[j] <= indices[i - 1]) {
-                        j--
-                    }
-                    indices.swap(i - 1, j)
-                    j = lastIndex
-                    while (i < j) {
-                        indices.swap(i, j)
-                        i++
-                        j--
-                    }
-                }
-            }
-            */
         } else {
             object : Iterator<R> {
                 val indices = IntArray(n) { it }
@@ -113,31 +85,6 @@ object PermutationGenerator {
                     return nextValue
                 }
             }
-
-            /* SequenceBuilderIterator is not good performance
-            buildIterator {
-                val indices = IntArray(n) { it }
-                val cycles = IntArray(r) { n - it }
-                loop@ while (true) {
-                    yield(transform(indices))
-                    for (i in r - 1 downTo 0) {
-                        cycles[i]--
-                        if (cycles[i] == 0) {
-                            val first = indices[i]
-                            for (j in i until n - 1) {
-                                indices[j] = indices[j + 1]
-                            }
-                            indices[n - 1] = first
-                            cycles[i] = n - i
-                        } else {
-                            indices.swap(i, n - cycles[i])
-                            continue@loop
-                        }
-                    }
-                    break
-                }
-            }
-            */
         }
 
         return CombinatorialSequence(totalSize, iterator)

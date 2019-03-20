@@ -68,37 +68,6 @@ object DerangementGenerator {
             }
         }
 
-        /* SequenceBuilderIterator is not good performance
-        val iterator = buildIterator {
-            val indices = IntArray(n) { it }
-            val lastIndex = n - 1
-            while (true) {
-                var i = 0
-                if (indices.all { it != i++ }) {
-                    yield(transform(indices))
-                }
-                i = lastIndex
-                while (i > 0 && indices[i - 1] >= indices[i]) {
-                    i--
-                }
-                if (i <= 0) {
-                    break
-                }
-                var j = lastIndex
-                while (indices[j] <= indices[i - 1]) {
-                    j--
-                }
-                indices.swap(i - 1, j)
-                j = lastIndex
-                while (i < j) {
-                    indices.swap(i, j)
-                    i++
-                    j--
-                }
-            }
-        }
-        */
-
         return CombinatorialSequence(totalSize, iterator)
     }
 

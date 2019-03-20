@@ -66,31 +66,6 @@ object PermutationWithRepetitionGenerator {
             }
         }
 
-        /* SequenceBuilderIterator is not good performance
-        val condition = try {
-            var t = totalSize.longValueExact();
-            { t-- > 0 }
-        } catch (e: ArithmeticException) {
-            var t = totalSize;
-            { t-- > BigInteger.ZERO }
-        }
-
-        val iterator = buildIterator {
-            val indices = IntArray(r)
-            while (condition()) {
-                yield(transform(indices))
-                for (i in r - 1 downTo 0) {
-                    if (indices[i] >= n - 1) {
-                        indices[i] = 0
-                    } else {
-                        indices[i]++
-                        break
-                    }
-                }
-            }
-        }
-        */
-
         return CombinatorialSequence(totalSize, iterator)
     }
 

@@ -52,31 +52,6 @@ object PowerSetGenerator {
             }
         }
 
-        /* SequenceBuilderIterator is not good performance
-        val iterator = buildIterator {
-            val bitLength = totalSize.bitLength()
-            val bitSet = BitSet(bitLength)
-            val lastIndex = bitLength - 1
-
-            while (true) {
-                val acc = initial(bitSet.cardinality())
-                var i = bitSet.nextSetBit(0)
-                var index = 0
-                while (i != -1) {
-                    transform(index++, acc, i)
-                    i = bitSet.nextSetBit(i + 1)
-                }
-                yield(acc)
-
-                i = bitSet.nextClearBit(0)
-                if (i >= lastIndex) {
-                    break
-                }
-                bitSet.flip(0, i + 1)
-            }
-        }
-        */
-
         return CombinatorialSequence(totalSize, iterator)
     }
 

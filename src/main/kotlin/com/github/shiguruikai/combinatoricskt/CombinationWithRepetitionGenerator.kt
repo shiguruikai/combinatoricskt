@@ -44,25 +44,6 @@ object CombinationWithRepetitionGenerator {
             }
         }
 
-        /* SequenceBuilderIterator is not good performance
-        val iterator = buildIterator {
-            val indices = IntArray(r)
-            loop@ while (true) {
-                yield(transform(indices))
-                for (i in r - 1 downTo 0) {
-                    if (indices[i] != n - 1) {
-                        val v = indices[i] + 1
-                        for (j in i until r) {
-                            indices[j] = v
-                        }
-                        continue@loop
-                    }
-                }
-                break
-            }
-        }
-        */
-
         return CombinatorialSequence(totalSize, iterator)
     }
 
