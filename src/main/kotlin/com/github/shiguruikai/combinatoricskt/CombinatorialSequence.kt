@@ -38,18 +38,12 @@ class CombinatorialSequence<out T>(
     /**
      * Returns a [List] containing all elements.
      *
-     * The returned instance is [ArrayList] if [totalSize] is less than or equal to [MAX_ARRAY_SIZE],
-     * [LinkedList] otherwise.
-     *
      * The operation is _terminal_.
      */
     fun toList(): List<T> = toMutableList()
 
     /**
      * Returns a [MutableList] containing all elements.
-     *
-     * The returned instance is [ArrayList] if [totalSize] is less than or equal to [MAX_ARRAY_SIZE],
-     * [LinkedList] otherwise.
      *
      * The operation is _terminal_.
      */
