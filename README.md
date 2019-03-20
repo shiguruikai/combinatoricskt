@@ -16,6 +16,8 @@ Iterable または Array から以下のシーケンスを生成する。
 - [Cartesian Product](/README.md#cartesian-product) （デカルト積）
 - [Power Set](/README.md#power-set) （冪集合）
 
+Extension Functions: [Itertools.kt](/src/main/kotlin/com/github/shiguruikai/combinatoricskt/Itertools.kt)
+
 ## Download
 
 Gradle:
@@ -32,86 +34,6 @@ Maven:
     <artifactId>combinatoricskt</artifactId>
     <version>1.3.0</version>
 </dependency>
-```
-
-## Usage
-
-There are three ways to generate a sequence.
-
-1. Use extension functions.
-2. Use the generate method of each Generator class.
-3. Use the indices method of each Generator class.
-
-The returned [CombinatorialSequence](/src/main/kotlin/com/github/shiguruikai/combinatoricskt/CombinatorialSequence.kt) is Sequence, but it can be iterated only once.
-
-### 1. Use extension functions
-
-See [Itertools.kt](/src/main/kotlin/com/github/shiguruikai/combinatoricskt/Itertools.kt)
-
-Iterable Extension Functions:
-
-```kotlin 
-fun <T> Iterable<T>.permutations(length: Int? = null): CombinatorialSequence<List<T>>
-
-fun <T> Iterable<T>.permutationsWithRepetition(length: Int): CombinatorialSequence<List<T>>
-
-fun <T> Iterable<T>.derangements(): CombinatorialSequence<List<T>>
-
-fun <T> Iterable<T>.combinations(length: Int): CombinatorialSequence<List<T>>
-
-fun <T> Iterable<T>.combinationsWithRepetition(length: Int): CombinatorialSequence<List<T>>
-
-fun <T> Iterable<T>.cartesianProduct(vararg others: Iterable<T>, repeat: Int = 1): CombinatorialSequence<List<T>>
-
-fun <T> Iterable<T>.powerset(): CombinatorialSequence<List<T>>
-```
-
-Array Extension Functions:
-
-```kotlin 
-inline fun <reified T> Array<T>.permutations(length: Int? = null): CombinatorialSequence<Array<T>>
-
-inline fun <reified T> Array<T>.permutationsWithRepetition(length: Int): CombinatorialSequence<Array<T>>
-
-inline fun <reified T> Array<T>.derangements(): CombinatorialSequence<Array<T>>
-
-inline fun <reified T> Array<T>.combinations(length: Int): CombinatorialSequence<Array<T>>
-
-inline fun <reified T> Array<T>.combinationsWithRepetition(length: Int): CombinatorialSequence<Array<T>>
-
-inline fun <reified T> Array<T>.cartesianProduct(vararg others: Array<T>, repeat: Int = 1): CombinatorialSequence<Array<T>>
-
-inline fun <reified T> Array<T>.powerset(): CombinatorialSequence<Array<T>>
-```
-
-### 2. Use the generate method
-
-Example:
-
-```kotlin 
-PermutationGenerator.generate('a'..'c', length = 2).forEach(::println)
-// [a, b]
-// [a, c]
-// [b, a]
-// [b, c]
-// [c, a]
-// [c, b]
-```
-
-### 3. Use the indices method
-
-The indices method generate the indices sequence of IntArray.
-
-Example:
-
-```kotlin 
-PermutationGenerator.indices(n = 3, r = 2).map { it.contentToString() }.forEach(::println)
-// [0, 1]
-// [0, 2]
-// [1, 0]
-// [1, 2]
-// [2, 0]
-// [2, 1]
 ```
 
 ## Permutations
