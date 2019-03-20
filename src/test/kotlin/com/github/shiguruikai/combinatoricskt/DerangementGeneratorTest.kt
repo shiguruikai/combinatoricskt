@@ -42,7 +42,7 @@ internal class DerangementGeneratorTest {
         for (r in range) {
             val x = range.take(r)
             assertEquals(
-                    x.permutations().filter { var i = 0; it.all { it != i++ } }.toList(),
+                    x.permutations().filter { list -> var i = 0; list.all { it != i++ } }.toList(),
                     x.derangements().toList())
             assertEquals(x.derangements().totalSize, x.derangements().toList().size.toBigInteger())
         }

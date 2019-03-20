@@ -15,8 +15,6 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.math.BigInteger
-import java.util.*
-import kotlin.coroutines.experimental.buildSequence
 
 internal class CombinationWithRepetitionGeneratorTest {
 
@@ -65,11 +63,11 @@ internal class CombinationWithRepetitionGeneratorTest {
 
         // permutationsWithRepetition() は permutationsWithRepetition() のシーケンスから、
         // 要素が（入力プールの位置に応じた順序で）ソート順になっていない項目をフィルタリングしたものと同じ
-        fun <T> Iterable<T>.cwr2(length: Int): List<List<T>> = buildSequence {
+        fun <T> Iterable<T>.cwr2(length: Int): List<List<T>> = sequence {
             val pool = toList()
             pool.indices.permutationsWithRepetition(length)
                     .filter { it.sorted() == it }
-                    .forEach { yield(it.map { pool[it] }) }
+                    .forEach { list -> yield(list.map { pool[it] }) }
         }.toList()
 
         fun numcombs(n: Int, r: Int): BigInteger = when (n) {
@@ -77,7 +75,7 @@ internal class CombinationWithRepetitionGeneratorTest {
             else -> combinationsWithRepetition(n, r)
         }
 
-        val comparator = Comparator<List<Int>> { o1, o2 -> Arrays.compare(o1.toTypedArray(), o2.toTypedArray()) }
+        val comparator = ListComparator<Int>()
 
         for (n in 0 until 7) {
             val values = (0 until n).map { 5 * it - 12 }
@@ -85,7 +83,7 @@ internal class CombinationWithRepetitionGeneratorTest {
                 val result = values.combinationsWithRepetition(r).toList()
 
                 assertEquals(result, values.toTypedArray().combinationsWithRepetition(r).map { it.toList() }.toList())
-                assertEquals(result, CombinationWithRepetitionGenerator.indices(n, r).map { it.map { values[it] } }.toList())
+                assertEquals(result, CombinationWithRepetitionGenerator.indices(n, r).map { ints -> ints.map { values[it] } }.toList())
 
                 assertEquals(result.count(), numcombs(n, r).intValueExact())
                 assertEquals(result.count(), result.toSet().count())

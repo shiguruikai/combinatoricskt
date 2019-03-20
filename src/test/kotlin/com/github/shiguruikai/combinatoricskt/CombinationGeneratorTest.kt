@@ -14,8 +14,6 @@ import org.junit.jupiter.api.Assertions.assertIterableEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.util.*
-import kotlin.coroutines.experimental.buildSequence
 
 internal class CombinationGeneratorTest {
 
@@ -54,26 +52,26 @@ internal class CombinationGeneratorTest {
         expected.forEachIndexed { index, it ->
             assertEquals(it, array.toList().combinations(index).toList().toString())
             assertEquals(it, array.combinations(index).map { it.toList() }.toList().toString())
-            assertEquals(it, CombinationGenerator.indices(array.size, index).map { it.map { array[it] } }.toList().toString())
+            assertEquals(it, CombinationGenerator.indices(array.size, index).map { ints -> ints.map { array[it] } }.toList().toString())
         }
 
         // combinations() は permutations() のシーケンスから、
         // 要素が（入力プールの位置に応じた順序で）ソート順になっていない項目をフィルタリングしたものと同じ
-        fun <T> Iterable<T>.combinations2(length: Int): Sequence<List<T>> = buildSequence {
+        fun <T> Iterable<T>.combinations2(length: Int): Sequence<List<T>> = sequence {
             val pool = toList()
             pool.indices.permutations(length)
                     .filter { it.sorted() == it }
-                    .forEach { yield(it.map { pool[it] }) }
+                    .forEach { list -> yield(list.map { pool[it] }) }
         }
 
-        fun <T> Iterable<T>.combinations3(length: Int): Sequence<List<T>> = buildSequence {
+        fun <T> Iterable<T>.combinations3(length: Int): Sequence<List<T>> = sequence {
             val pool = toList()
             pool.indices.combinationsWithRepetition(length)
                     .filter { it.toSet().size == length }
-                    .forEach { yield(it.map { pool[it] }) }
+                    .forEach { list -> yield(list.map { pool[it] }) }
         }
 
-        val comparator = Comparator<List<Int>> { o1, o2 -> Arrays.compare(o1.toTypedArray(), o2.toTypedArray()) }
+        val comparator = ListComparator<Int>()
 
         for (n in 0 until 7) {
             val values = (0 until n).map { 5 * it - 12 }
@@ -81,7 +79,7 @@ internal class CombinationGeneratorTest {
                 val result = values.combinations(r).toList()
 
                 assertEquals(result, values.toTypedArray().combinations(r).map { it.toList() }.toList())
-                assertEquals(result, CombinationGenerator.indices(n, r).map { it.map { values[it] } }.toList())
+                assertEquals(result, CombinationGenerator.indices(n, r).map { ints -> ints.map { values[it] } }.toList())
 
                 assertEquals(result.count(), if (r > n) 0 else combinations(n, r).intValueExact())
                 assertEquals(result.count(), result.toSet().count())
@@ -101,3 +99,4 @@ internal class CombinationGeneratorTest {
         }
     }
 }
+

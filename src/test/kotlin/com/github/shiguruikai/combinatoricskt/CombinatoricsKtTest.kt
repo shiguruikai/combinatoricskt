@@ -18,7 +18,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.math.BigInteger
-import java.util.*
 
 internal class CombinatoricsKtTest {
 
@@ -46,7 +45,7 @@ internal class CombinatoricsKtTest {
                 values.cartesianProduct().testCheckSize(n.toBigInteger())
                 values.cartesianProduct(values).testCheckSize((n * n).toBigInteger())
                 values.cartesianProduct(values, repeat = r).testCheckSize((n * n).toBigInteger().pow(r))
-                values.powerset().testCheckSize(BigInteger.TWO.pow(n))
+                values.powerset().testCheckSize(2.toBigInteger().pow(n))
             }
         }
     }
@@ -55,7 +54,7 @@ internal class CombinatoricsKtTest {
     @DisplayName("組合せの関係をテスト")
     fun test_combinatorics() {
         val sortedList: List<Char> = ('A'..'F').sorted()
-        val comparator = Comparator<List<Char>> { o1, o2 -> Arrays.compare(o1.toTypedArray(), o2.toTypedArray()) }
+        val comparator = ListComparator<Char>()
 
         for (n in sortedList.indices) {
             val s = sortedList.take(n)

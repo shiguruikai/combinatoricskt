@@ -15,8 +15,6 @@ import org.junit.jupiter.api.Assertions.assertIterableEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.util.*
-import kotlin.coroutines.experimental.buildSequence
 
 internal class PermutationGeneratorTest {
 
@@ -67,17 +65,17 @@ internal class PermutationGeneratorTest {
 
         // permutations() は permutationsWithRepetition() のシーケンスから、
         // 重複 （入力プールの位置に応じた順序で）を除くようフィルタリングしたものと同じ
-        fun <T> Iterable<T>.permutations2(length: Int? = null): Sequence<List<T>> = buildSequence {
+        fun <T> Iterable<T>.permutations2(length: Int? = null): Sequence<List<T>> = sequence {
             val pool = toList()
             val r = length ?: pool.size
             pool.indices.permutationsWithRepetition(r)
                     .filter { it.toSet().size == r }
-                    .forEach { yield(it.map { pool[it] }) }
+                    .forEach { list -> yield(list.map { pool[it] }) }
         }
 
         // https://www.wikiwand.com/en/Heap%27s_algorithm
         // 辞書順で取得できない
-        fun <T> Iterable<T>.permutations3(): Sequence<List<T>> = buildSequence {
+        fun <T> Iterable<T>.permutations3(): Sequence<List<T>> = sequence {
             val pool = toList()
             val n = pool.size
             val indices = IntArray(n) { it }
@@ -101,7 +99,7 @@ internal class PermutationGeneratorTest {
             }
         }
 
-        val comparator = Comparator<List<Int>> { o1, o2 -> Arrays.compare(o1.toTypedArray(), o2.toTypedArray()) }
+        val comparator = ListComparator<Int>()
 
         for (n in 0 until 7) {
             val values = (0 until n).map { 5 * it - 12 }
@@ -109,7 +107,7 @@ internal class PermutationGeneratorTest {
                 val result = values.permutations(r).toList()
 
                 assertEquals(result, values.toTypedArray().permutations(r).map { it.toList() }.toList())
-                assertEquals(result, PermutationGenerator.indices(n, r).map { it.map { values[it] } }.toList())
+                assertEquals(result, PermutationGenerator.indices(n, r).map { ints -> ints.map { values[it] } }.toList())
 
                 assertEquals(result.count(), if (r > n) 0 else permutations(n, r).intValueExact())
                 assertEquals(result.count(), result.toSet().count())

@@ -8,7 +8,6 @@
 package com.github.shiguruikai.combinatoricskt
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
 import java.math.BigInteger.ONE
 import java.math.BigInteger.ZERO
@@ -42,16 +41,5 @@ internal class CombinatorialSequenceTest {
         assertEquals(ZERO, CombinatorialSequence(ZERO, sequenceOf("test")).totalSize)
         assertEquals(ONE, CombinatorialSequence(ONE, sequenceOf("test")).totalSize)
         assertEquals(123.toBigInteger(), CombinatorialSequence(123.toBigInteger(), sequenceOf("test")).totalSize)
-    }
-
-    @Test
-    fun test_stream_count() {
-        // stream の count() はシーケンスのサイズに関わらず spliterator で指定した totalSize のサイズになる
-        for (i in 2..10) {
-            val getSequence = { CombinatorialSequence(i.toBigInteger(), sequenceOf("test")) }
-            assertEquals(getSequence().totalSize, getSequence().asStream().count().toBigInteger())
-            // リストにすると実際の要素の数を取得できる
-            assertNotEquals(getSequence().totalSize, getSequence().asStream().toList().count().toBigInteger())
-        }
     }
 }

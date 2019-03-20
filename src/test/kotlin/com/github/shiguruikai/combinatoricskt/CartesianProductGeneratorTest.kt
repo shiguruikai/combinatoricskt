@@ -11,8 +11,7 @@ import com.github.shiguruikai.combinatoricskt.internal.times
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.math.BigInteger
-import java.util.*
-import kotlin.coroutines.experimental.buildSequence
+import kotlin.random.Random
 
 internal class CartesianProductGeneratorTest {
 
@@ -90,7 +89,7 @@ internal class CartesianProductGeneratorTest {
             }
             val indices = IntArray(n)
 
-            return buildSequence {
+            return sequence {
                 loop@ while (true) {
                     yield(indices.mapIndexed { index, it -> pools[index][it] })
 
@@ -123,7 +122,7 @@ internal class CartesianProductGeneratorTest {
         }
 
         val argTypes: Array<Iterable<Any>> = arrayOf(emptyList, 'a'..'c', 0..0, ('a'..'d').toSet(), 0..3, listOf(8, 9))
-        val random = Random()
+        val random = Random
         repeat(20) {
             val iterables = (0..2).map { argTypes[random.nextInt(argTypes.size)] }.toTypedArray()
             val arrays = iterables.map { it.toList().toTypedArray() }.toTypedArray()

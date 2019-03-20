@@ -10,9 +10,6 @@ package com.github.shiguruikai.combinatoricskt
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.coroutines.experimental.buildIterator
 
 internal class PowerSetGeneratorTest {
 
@@ -42,24 +39,23 @@ internal class PowerSetGeneratorTest {
             val pool = toList()
             val totalSize = 2.toBigInteger().pow(pool.size)
 
-            val iterator = buildIterator {
+            val iterator = iterator {
                 val bitLength = totalSize.bitLength()
                 val max = totalSize.intValueExact() - 1
-                var intbit = 0
-
+                var i = 0
                 while (true) {
-                    val acc = ArrayList<T>(Integer.bitCount(intbit))
-                    for (i in 0..bitLength) {
-                        if ((1 shl i) and intbit != 0) {
-                            acc += pool[i]
+                    val acc = ArrayList<T>(Integer.bitCount(i))
+                    for (index in 0..bitLength) {
+                        if ((1 shl index) and i != 0) {
+                            acc += pool[index]
                         }
                     }
                     yield(acc)
 
-                    if (intbit >= max) {
+                    if (i >= max) {
                         break
                     }
-                    intbit++
+                    i++
                 }
             }
 
@@ -88,7 +84,7 @@ internal class PowerSetGeneratorTest {
             return powerset3Tailrec(toList(), sequenceOf(listOf()))
         }
 
-        val comparator = Comparator<List<Char>> { o1, o2 -> Arrays.compare(o1.toTypedArray(), o2.toTypedArray()) }
+        val comparator = ListComparator<Char>()
 
         val range = 'a'..'f'
         for (i in 0..7) {
