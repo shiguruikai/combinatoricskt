@@ -39,12 +39,6 @@ test {
     useJUnitPlatform()
 }
 
-dokka {
-    outputFormat = 'html'
-    outputDirectory = "${buildDir}/dokka"
-    jdkVersion = 8
-}
-
 jar {
     manifest {
         attributes 'Implementation-Title': project.name,
@@ -54,19 +48,24 @@ jar {
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
+    archiveClassifier = 'sources'
     from sourceSets.main.allSource
 }
 
+dokka {
+    outputFormat = 'html'
+    outputDirectory = "${buildDir}/dokka"
+    jdkVersion = 8
+}
+
 task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
-    logging.level = LogLevel.ERROR
     outputFormat = 'javadoc'
     outputDirectory = javadoc.destinationDir
     jdkVersion = 8
 }
 
 task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
     from javadoc.destinationDir
 }
 
