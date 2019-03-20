@@ -7,8 +7,7 @@
 
 package com.github.shiguruikai.combinatoricskt
 
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.BitSet
 
 /**
  * The class [PowerSetGenerator] contains methods for generating power set.
