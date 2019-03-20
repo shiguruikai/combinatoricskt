@@ -1,3 +1,10 @@
+/*
+ * Copyright 2019 shiguruikai
+ *
+ * Released under the MIT license
+ * https://github.com/shiguruikai/combinatoricskt/blob/master/LICENSE
+ */
+
 package com.github.shiguruikai.combinatoricskt
 
 class ListComparator<T : Comparable<T>> : Comparator<List<T>> {
