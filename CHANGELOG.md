@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.4.0 (2019-03-20)
+- Kotlinを1.3.21にアップデート、それに伴いコードを微修正
+
 ## 1.3.0 (2018-07-18)
 - `CombinatorialSequence` の型パラメータを共変に変更
 - `CartesianProductGenerator` の変更点

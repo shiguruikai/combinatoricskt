@@ -23,7 +23,7 @@ Extension Functions: [Itertools.kt](/src/main/kotlin/com/github/shiguruikai/comb
 Gradle:
 
 ```gradle 
-implementation 'com.github.shiguruikai:combinatoricskt:1.3.0'
+implementation 'com.github.shiguruikai:combinatoricskt:1.4.0'
 ```
 
 Maven:
@@ -32,7 +32,7 @@ Maven:
 <dependency>
     <groupId>com.github.shiguruikai</groupId>
     <artifactId>combinatoricskt</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.0</version>
 </dependency>
 ```
 
