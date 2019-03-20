@@ -91,8 +91,8 @@ object CartesianProductGenerator {
         }
 
         val sizes = mutableListOf<Int>()
-        val pools = iterables.mapToArray {
-            it.toList().also {
+        val pools = iterables.mapToArray { iterable ->
+            iterable.toList().also {
                 if (it.isEmpty()) {
                     return CombinatorialSequence(BigInteger.ZERO, emptySequence())
                 }

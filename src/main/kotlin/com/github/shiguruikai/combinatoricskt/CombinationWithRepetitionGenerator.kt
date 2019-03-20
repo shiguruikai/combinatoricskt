@@ -106,6 +106,6 @@ object CombinationWithRepetitionGenerator {
 
         val pool = array.copyOf()
 
-        return build(n, length) { it.mapToArray { pool[it] } }
+        return build(n, length) { ints -> ints.mapToArray { pool[it] } }
     }
 }

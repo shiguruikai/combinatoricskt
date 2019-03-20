@@ -103,7 +103,7 @@ object DerangementGenerator {
             return CombinatorialSequence(BigInteger.ZERO, sequenceOf())
         }
 
-        return build(n) { it.map { pool[it] } }
+        return build(n) { ints -> ints.map { pool[it] } }
     }
 
     /**
@@ -120,6 +120,6 @@ object DerangementGenerator {
 
         val pool = array.copyOf()
 
-        return build(n) { it.mapToArray { pool[it] } }
+        return build(n) { ints -> ints.mapToArray { pool[it] } }
     }
 }

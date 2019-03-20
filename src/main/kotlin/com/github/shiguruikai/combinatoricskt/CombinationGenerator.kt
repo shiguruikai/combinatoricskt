@@ -85,7 +85,7 @@ object CombinationGenerator {
             return CombinatorialSequence(BigInteger.ZERO, emptySequence())
         }
 
-        return build(n, length) { it.map { pool[it] } }
+        return build(n, length) { ints -> ints.map { pool[it] } }
     }
 
     /**
@@ -106,6 +106,6 @@ object CombinationGenerator {
 
         val pool = array.copyOf()
 
-        return build(n, length) { it.mapToArray { pool[it] } }
+        return build(n, length) { ints -> ints.mapToArray { pool[it] } }
     }
 }
