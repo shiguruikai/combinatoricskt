@@ -75,6 +75,6 @@ class CombinatorialSequence<out T>(
          *
          * @see java.util.ArrayList.MAX_ARRAY_SIZE
          */
-        val MAX_ARRAY_SIZE = (Int.MAX_VALUE - 8).toBigInteger()
+        private val MAX_ARRAY_SIZE = (Int.MAX_VALUE - 8).toBigInteger()
     }
 }
