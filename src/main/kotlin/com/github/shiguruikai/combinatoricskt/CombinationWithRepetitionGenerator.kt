@@ -85,7 +85,7 @@ object CombinationWithRepetitionGenerator {
             return CombinatorialSequence(BigInteger.ZERO, emptySequence())
         }
 
-        return build(n, length) { it.map { pool[it] } }
+        return build(n, length) { ints -> ints.map { pool[it] } }
     }
 
     /**
