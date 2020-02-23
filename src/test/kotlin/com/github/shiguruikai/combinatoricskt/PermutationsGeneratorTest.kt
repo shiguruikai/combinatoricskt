@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class PermutationGeneratorTest {
+internal class PermutationsGeneratorTest {
 
     private val emptyList = emptyList<Any>()
     private val emptyArray = emptyArray<Any>()
@@ -107,7 +107,7 @@ internal class PermutationGeneratorTest {
                 val result = values.permutations(r).toList()
 
                 assertEquals(result, values.toTypedArray().permutations(r).map { it.toList() }.toList())
-                assertEquals(result, PermutationGenerator.indices(n, r).map { ints -> ints.map { values[it] } }.toList())
+                assertEquals(result, PermutationsGenerator.indices(n, r).map { ints -> ints.map { values[it] } }.toList())
 
                 assertEquals(result.count(), if (r > n) 0 else permutations(n, r).intValueExact())
                 assertEquals(result.count(), result.toSet().count())

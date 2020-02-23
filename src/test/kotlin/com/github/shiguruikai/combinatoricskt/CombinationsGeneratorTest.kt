@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class CombinationGeneratorTest {
+internal class CombinationsGeneratorTest {
 
     private val emptyList = emptyList<Any>()
     private val emptyArray = emptyArray<Any>()
@@ -52,7 +52,7 @@ internal class CombinationGeneratorTest {
         expected.forEachIndexed { index, it ->
             assertEquals(it, array.toList().combinations(index).toList().toString())
             assertEquals(it, array.combinations(index).map { it.toList() }.toList().toString())
-            assertEquals(it, CombinationGenerator.indices(array.size, index).map { ints -> ints.map { array[it] } }.toList().toString())
+            assertEquals(it, CombinationsGenerator.indices(array.size, index).map { ints -> ints.map { array[it] } }.toList().toString())
         }
 
         // combinations() は permutations() のシーケンスから、
@@ -79,7 +79,7 @@ internal class CombinationGeneratorTest {
                 val result = values.combinations(r).toList()
 
                 assertEquals(result, values.toTypedArray().combinations(r).map { it.toList() }.toList())
-                assertEquals(result, CombinationGenerator.indices(n, r).map { ints -> ints.map { values[it] } }.toList())
+                assertEquals(result, CombinationsGenerator.indices(n, r).map { ints -> ints.map { values[it] } }.toList())
 
                 assertEquals(result.count(), if (r > n) 0 else combinations(n, r).intValueExact())
                 assertEquals(result.count(), result.toSet().count())

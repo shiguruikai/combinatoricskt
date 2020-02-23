@@ -136,11 +136,11 @@ internal class CombinatoricsKtTest {
 
         for (n in 0..4) {
             for (r in 0..4) {
-                PermutationGenerator.indices(n, r).testIterator()
-                PermutationWithRepetitionGenerator.indices(n, r).testIterator()
+                PermutationsGenerator.indices(n, r).testIterator()
+                PermutationsWithRepetitionGenerator.indices(n, r).testIterator()
                 DerangementGenerator.indices(n).testIterator()
-                CombinationGenerator.indices(n, r).testIterator()
-                CombinationWithRepetitionGenerator.indices(n, r).testIterator()
+                CombinationsGenerator.indices(n, r).testIterator()
+                CombinationsWithRepetitionGenerator.indices(n, r).testIterator()
                 CartesianProductGenerator.indices(n, r).testIterator()
                 CartesianProductGenerator.indices(n, r, repeat = 2).testIterator()
                 PowerSetGenerator.indices(n).testIterator()

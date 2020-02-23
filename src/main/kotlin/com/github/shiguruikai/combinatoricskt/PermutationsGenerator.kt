@@ -14,9 +14,9 @@ import com.github.shiguruikai.combinatoricskt.internal.swap
 import java.math.BigInteger
 
 /**
- * The class [PermutationGenerator] contains methods for generating permutations.
+ * The class [PermutationsGenerator] contains methods for generating permutations.
  */
-object PermutationGenerator {
+object PermutationsGenerator {
 
     @PublishedApi
     internal inline fun <R> build(n: Int, r: Int,

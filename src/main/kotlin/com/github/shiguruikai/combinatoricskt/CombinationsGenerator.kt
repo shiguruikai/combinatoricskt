@@ -12,9 +12,9 @@ import com.github.shiguruikai.combinatoricskt.internal.mapToArray
 import java.math.BigInteger
 
 /**
- * The class [CombinationGenerator] contains methods for generating combinations.
+ * The class [CombinationsGenerator] contains methods for generating combinations.
  */
-object CombinationGenerator {
+object CombinationsGenerator {
 
     @PublishedApi
     internal inline fun <R> build(n: Int, r: Int,

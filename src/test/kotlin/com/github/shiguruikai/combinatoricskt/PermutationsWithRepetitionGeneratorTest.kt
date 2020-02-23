@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Assertions.assertIterableEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class PermutationWithRepetitionGeneratorTest {
+internal class PermutationsWithRepetitionGeneratorTest {
 
     private val emptyList = emptyList<Any>()
     private val emptyArray = emptyArray<Any>()
@@ -62,7 +62,7 @@ internal class PermutationWithRepetitionGeneratorTest {
         expected.forEachIndexed { index, it ->
             assertEquals(it, array.toList().permutationsWithRepetition(index).toList().toString())
             assertEquals(it, array.permutationsWithRepetition(index).map { it.toList() }.toList().toString())
-            assertEquals(it, PermutationWithRepetitionGenerator.indices(array.size, index).map { it.toList() }.toList().toString())
+            assertEquals(it, PermutationsWithRepetitionGenerator.indices(array.size, index).map { it.toList() }.toList().toString())
         }
 
         assertArrayEquals(

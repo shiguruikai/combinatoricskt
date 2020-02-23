@@ -11,9 +11,9 @@ import com.github.shiguruikai.combinatoricskt.internal.mapToArray
 import java.math.BigInteger
 
 /**
- * The class [PermutationWithRepetitionGenerator] contains methods for generating permutations with repetition.
+ * The class [PermutationsWithRepetitionGenerator] contains methods for generating permutations with repetition.
  */
-object PermutationWithRepetitionGenerator {
+object PermutationsWithRepetitionGenerator {
 
     @PublishedApi
     internal inline fun <R> build(n: Int, r: Int,

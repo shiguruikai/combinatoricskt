@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.math.BigInteger
 
-internal class CombinationWithRepetitionGeneratorTest {
+internal class CombinationsWithRepetitionGeneratorTest {
 
     private val emptyList = emptyList<Any>()
     private val emptyArray = emptyArray<Any>()
@@ -83,7 +83,7 @@ internal class CombinationWithRepetitionGeneratorTest {
                 val result = values.combinationsWithRepetition(r).toList()
 
                 assertEquals(result, values.toTypedArray().combinationsWithRepetition(r).map { it.toList() }.toList())
-                assertEquals(result, CombinationWithRepetitionGenerator.indices(n, r).map { ints -> ints.map { values[it] } }.toList())
+                assertEquals(result, CombinationsWithRepetitionGenerator.indices(n, r).map { ints -> ints.map { values[it] } }.toList())
 
                 assertEquals(result.count(), numcombs(n, r).intValueExact())
                 assertEquals(result.count(), result.toSet().count())

@@ -24,7 +24,7 @@ object Combinatorics {
     @JvmStatic
     @JvmOverloads
     fun <T> permutations(iterable: Iterable<T>, length: Int? = null): CombinatorialSequence<List<T>> =
-            PermutationGenerator.generate(iterable, length)
+            PermutationsGenerator.generate(iterable, length)
 
     /**
      * Returns a sequence of permutations with repetition of [length] of the elements of [iterable].
@@ -33,7 +33,7 @@ object Combinatorics {
      */
     @JvmStatic
     fun <T> permutationsWithRepetition(iterable: Iterable<T>, length: Int): CombinatorialSequence<List<T>> =
-            PermutationWithRepetitionGenerator.generate(iterable, length)
+            PermutationsWithRepetitionGenerator.generate(iterable, length)
 
     /**
      * Returns a sequence of derangement of the elements of [iterable].
@@ -49,7 +49,7 @@ object Combinatorics {
      */
     @JvmStatic
     fun <T> combinations(iterable: Iterable<T>, length: Int): CombinatorialSequence<List<T>> =
-            CombinationGenerator.generate(iterable, length)
+            CombinationsGenerator.generate(iterable, length)
 
     /**
      * Returns a sequence of combinations with repetition of [length] of the elements of [iterable].
@@ -58,7 +58,7 @@ object Combinatorics {
      */
     @JvmStatic
     fun <T> combinationsWithRepetition(iterable: Iterable<T>, length: Int): CombinatorialSequence<List<T>> =
-            CombinationWithRepetitionGenerator.generate(iterable, length)
+            CombinationsWithRepetitionGenerator.generate(iterable, length)
 
     /**
      * Returns a sequence of cartesian product of the elements of [iterables].
@@ -89,7 +89,7 @@ object Combinatorics {
      * @throws IllegalArgumentException if [length] is negative.
      */
     inline fun <reified T> permutations(array: Array<T>, length: Int? = null): CombinatorialSequence<Array<T>> =
-            PermutationGenerator.generate(array, length)
+            PermutationsGenerator.generate(array, length)
 
     /**
      * Returns a sequence of permutations with repetition of [length] of the elements of [array].
@@ -97,7 +97,7 @@ object Combinatorics {
      * @throws IllegalArgumentException if [length] is negative.
      */
     inline fun <reified T> permutationsWithRepetition(array: Array<T>, length: Int): CombinatorialSequence<Array<T>> =
-            PermutationWithRepetitionGenerator.generate(array, length = length)
+            PermutationsWithRepetitionGenerator.generate(array, length = length)
 
     /**
      * Returns a sequence of derangement of the elements of [array].
@@ -111,7 +111,7 @@ object Combinatorics {
      * @throws IllegalArgumentException if [length] is negative.
      */
     inline fun <reified T> combinations(array: Array<T>, length: Int): CombinatorialSequence<Array<T>> =
-            CombinationGenerator.generate(array, length)
+            CombinationsGenerator.generate(array, length)
 
     /**
      * Returns a sequence of combinations with repetition of [length] of the elements of [array].
@@ -119,7 +119,7 @@ object Combinatorics {
      * @throws IllegalArgumentException if [length] is negative.
      */
     inline fun <reified T> combinationsWithRepetition(array: Array<T>, length: Int): CombinatorialSequence<Array<T>> =
-            CombinationWithRepetitionGenerator.generate(array, length)
+            CombinationsWithRepetitionGenerator.generate(array, length)
 
     /**
      * Returns a sequence of cartesian product of the elements of [arrays].
