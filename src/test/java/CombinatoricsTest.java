@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2020 shiguruikai
+ *
+ * Licensed under the MIT license
+ * https://github.com/shiguruikai/combinatoricskt/blob/master/LICENSE
+ */
+
 import com.github.shiguruikai.combinatoricskt.Combinatorics;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

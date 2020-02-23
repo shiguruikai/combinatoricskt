@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2020 shiguruikai
+ *
+ * Licensed under the MIT license
+ * https://github.com/shiguruikai/combinatoricskt/blob/master/LICENSE
+ */
+
 @file:Suppress("NOTHING_TO_INLINE")
 
 package com.github.shiguruikai.combinatoricskt

@@ -1,7 +1,7 @@
 /*
- * Copyright 2019 shiguruikai
+ * Copyright (c) 2020 shiguruikai
  *
- * Released under the MIT license
+ * Licensed under the MIT license
  * https://github.com/shiguruikai/combinatoricskt/blob/master/LICENSE
  */
 
