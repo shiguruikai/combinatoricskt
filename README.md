@@ -5,7 +5,7 @@
 
 A combinatorics library for Kotlin.
 
-Generate the following sequence from Iterable or Array.  
+Generate the following sequence from Iterable or Array.<br>
 Iterable または Array から以下のシーケンスを生成する。
 
 - [Permutations](/README.md#permutations) （順列）
@@ -16,29 +16,32 @@ Iterable または Array から以下のシーケンスを生成する。
 - [Cartesian Product](/README.md#cartesian-product) （デカルト積）
 - [Power Set](/README.md#power-set) （冪集合）
 
-Extension Functions: [Itertools.kt](/src/main/kotlin/com/github/shiguruikai/combinatoricskt/Itertools.kt)
+Extension Functions: [extensions.kt](/src/main/kotlin/com/github/shiguruikai/combinatoricskt/extensions.kt)
 
 ## Download
 
-Gradle:
-
-```gradle 
-implementation 'com.github.shiguruikai:combinatoricskt:1.4.0'
+Gradle Groovy DSL
+```groovy
+implementation 'com.github.shiguruikai:combinatoricskt:1.5.0'
 ```
 
-Maven:
+Gradle Kotlin DSL
+```kotlin
+implementation("com.github.shiguruikai:combinatoricskt:1.5.0")
+```
 
-```xml 
+Apache Maven
+```xml
 <dependency>
-    <groupId>com.github.shiguruikai</groupId>
-    <artifactId>combinatoricskt</artifactId>
-    <version>1.4.0</version>
+  <groupId>com.github.shiguruikai</groupId>
+  <artifactId>combinatoricskt</artifactId>
+  <version>1.5.0</version>
 </dependency>
 ```
 
 ## Permutations
 
-```kotlin 
+```kotlin
 (1..3).permutations().toList()
 // [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
 
@@ -57,7 +60,7 @@ PermutationGenerator.indices(3, 2).map { it.contentToString() }.toList()
 
 ## Permutations with Repetition
 
-```kotlin 
+```kotlin
 (1..3).permutationsWithRepetition(1).toList()
 // [[1], [2], [3]]
 
@@ -73,7 +76,7 @@ PermutationWithRepetitionGenerator.indices(3, 2).map { it.contentToString() }.to
 
 ## Derangements
 
-```kotlin 
+```kotlin
 (1..3).derangements().toList()
 // [[2, 3, 1], [3, 1, 2]]
 
@@ -86,7 +89,7 @@ DerangementGenerator.indices(4).map { it.contentToString() }.toList()
 
 ## Combinations
 
-```kotlin 
+```kotlin
 (1..3).combinations(1).toList()
 // [[1], [2], [3]]
 
@@ -102,7 +105,7 @@ CombinationGenerator.indices(3, 2).map { it.contentToString() }.toList()
 
 ## Combinations with Repetition
 
-```kotlin 
+```kotlin
 (1..3).combinationsWithRepetition(1).toList()
 // [[1], [2], [3]]
 
@@ -118,7 +121,7 @@ CombinationWithRepetitionGenerator.indices(3, 2).map { it.contentToString() }.to
 
 ## Cartesian Product
 
-```kotlin 
+```kotlin
 (0..1).cartesianProduct('a'..'b').toList()
 // [[0, a], [0, b], [1, a], [1, b]]
 
@@ -137,7 +140,7 @@ CartesianProductGenerator.indices(1, 3, 2).map { it.contentToString() }.toList()
 
 ## Power Set
 
-```kotlin 
+```kotlin
 (1..3).powerset().toList()
 // [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
 
