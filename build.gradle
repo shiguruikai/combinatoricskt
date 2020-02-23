@@ -1,10 +1,9 @@
 plugins {
     id 'java-library'
-    id 'maven'
     id 'maven-publish'
     id 'signing'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.21'
-    id 'org.jetbrains.dokka' version '0.9.18'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.61'
+    id 'org.jetbrains.dokka' version '0.10.1'
 }
 
 group 'com.github.shiguruikai'
@@ -16,23 +15,16 @@ repositories {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.2.0"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.2.0"
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.0'
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = '1.8'
 }
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
+    kotlinOptions.jvmTarget = '1.8'
 }
 
 test {
@@ -41,45 +33,51 @@ test {
 
 jar {
     manifest {
-        attributes 'Implementation-Title': project.name,
-                'Automatic-Module-Name': 'com.github.shiguruikai.combinatoricskt',
+        attributes(
+                'Implementation-Title': project.name,
                 'Implementation-Version': project.version
+        )
     }
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    archiveClassifier = 'sources'
-    from sourceSets.main.allSource
 }
 
 dokka {
     outputFormat = 'html'
-    outputDirectory = "${buildDir}/dokka"
-    jdkVersion = 8
+    outputDirectory = "$buildDir/dokka"
+    configuration {
+        jdkVersion = 8
+        reportUndocumented = true
+    }
 }
 
 task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
     outputFormat = 'javadoc'
     outputDirectory = javadoc.destinationDir
-    jdkVersion = 8
+    configuration {
+        jdkVersion = 8
+        reportUndocumented = true
+    }
 }
 
 task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
-    archiveClassifier = 'javadoc'
+    archiveClassifier.set('javadoc')
     from javadoc.destinationDir
 }
 
-artifacts {
-    archives sourcesJar
-    archives javadocJar
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    archiveClassifier.set('sources')
+    from sourceSets.main.allSource
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
 publishing {
     publications {
         maven(MavenPublication) {
             from components.java
-            artifact sourcesJar
-            artifact javadocJar
             pom {
                 name = project.name
                 description = 'A combinatorics library for Kotlin'
@@ -108,8 +106,8 @@ publishing {
     }
     repositories {
         maven {
-            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+            def releasesRepoUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
+            def snapshotsRepoUrl = 'https://oss.sonatype.org/content/repositories/snapshots'
             url project.version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
             credentials {
                 username = sonatypeUsername
