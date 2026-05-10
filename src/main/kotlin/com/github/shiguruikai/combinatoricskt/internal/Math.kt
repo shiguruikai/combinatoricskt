@@ -27,13 +27,24 @@ internal fun permutations(n: Int, r: Int): BigInteger {
 @PublishedApi
 internal fun combinations(n: Int, r: Int): BigInteger {
     require(n >= 0 && r >= 0 && n >= r)
-    return permutationsHelper(n, r) / factorialHelper(r)
+    if (r == 0 || r == n) return BigInteger.ONE
+    val r2 = if (r > n / 2) n - r else r
+    if (r2 == 1) return n.toBigInteger()
+
+    var numerator = BigInteger.ONE
+    var denominator = BigInteger.ONE
+    for (i in 1..r2) {
+        numerator *= (n - i + 1).toBigInteger()
+        denominator *= i.toBigInteger()
+    }
+    return numerator / denominator
 }
 
 @PublishedApi
 internal fun combinationsWithRepetition(n: Int, r: Int): BigInteger {
     require(n >= 1 && r >= 0)
-    return factorialHelper(n + r - 1) / factorialHelper(r) / factorialHelper(n - 1)
+    if (r == 0) return BigInteger.ONE
+    return combinations(n + r - 1, r)
 }
 
 @PublishedApi
