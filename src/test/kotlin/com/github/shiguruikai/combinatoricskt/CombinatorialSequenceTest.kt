@@ -17,23 +17,23 @@ internal class CombinatorialSequenceTest {
 
     @Test
     fun toList() {
-        assertEquals(listOf("test"), CombinatorialSequence(ZERO, sequenceOf("test")).toList())
-        assertEquals(listOf("test"), CombinatorialSequence(ZERO, sequenceOf("test")).toList())
-        assertEquals(listOf('a', 'b', 'c'), CombinatorialSequence(ZERO, ('a'..'c').asSequence()).toList())
+        assertEquals(listOf("test"), CombinatorialSequence(ONE, sequenceOf("test")).toList())
+        assertEquals(listOf("test"), CombinatorialSequence(ONE, sequenceOf("test")).toList())
+        assertEquals(listOf('a', 'b', 'c'), CombinatorialSequence(3.toBigInteger(), ('a'..'c').asSequence()).toList())
     }
 
     @Test
     fun toMutableList() {
-        assertEquals(listOf("test"), CombinatorialSequence(ZERO, sequenceOf("test")).toMutableList())
-        assertEquals(listOf("test"), CombinatorialSequence(ZERO, sequenceOf("test")).toMutableList())
-        assertEquals(listOf('a', 'b', 'c'), CombinatorialSequence(ZERO, ('a'..'c').asSequence()).toMutableList())
+        assertEquals(listOf("test"), CombinatorialSequence(ONE, sequenceOf("test")).toMutableList())
+        assertEquals(listOf("test"), CombinatorialSequence(ONE, sequenceOf("test")).toMutableList())
+        assertEquals(listOf('a', 'b', 'c'), CombinatorialSequence(3.toBigInteger(), ('a'..'c').asSequence()).toMutableList())
     }
 
     @Test
     fun asStream() {
-        assertEquals(listOf("test"), CombinatorialSequence(ZERO, sequenceOf("test")).asStream().toList())
-        assertEquals(listOf("test"), CombinatorialSequence(ZERO, sequenceOf("test")).asStream().toList())
-        assertEquals(listOf('a', 'b', 'c'), CombinatorialSequence(ZERO, ('a'..'c').asSequence()).asStream().toList())
+        assertEquals(listOf("test"), CombinatorialSequence(ONE, sequenceOf("test")).asStream().toList())
+        assertEquals(listOf("test"), CombinatorialSequence(ONE, sequenceOf("test")).asStream().toList())
+        assertEquals(listOf('a', 'b', 'c'), CombinatorialSequence(3.toBigInteger(), ('a'..'c').asSequence()).asStream().toList())
     }
 
     @Test
