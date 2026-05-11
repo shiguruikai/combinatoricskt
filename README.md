@@ -20,12 +20,12 @@ Iterable または Array から以下のシーケンスを生成する。
 
 Gradle Groovy DSL
 ```groovy
-implementation 'com.github.shiguruikai:combinatoricskt:1.6.0'
+implementation 'com.github.shiguruikai:combinatoricskt:1.7.0'
 ```
 
 Gradle Kotlin DSL
 ```kotlin
-implementation("com.github.shiguruikai:combinatoricskt:1.6.0")
+implementation("com.github.shiguruikai:combinatoricskt:1.7.0")
 ```
 
 Apache Maven
@@ -33,7 +33,7 @@ Apache Maven
 <dependency>
   <groupId>com.github.shiguruikai</groupId>
   <artifactId>combinatoricskt</artifactId>
-  <version>1.6.0</version>
+  <version>1.7.0</version>
 </dependency>
 ```
 
