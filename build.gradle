@@ -1,10 +1,9 @@
 plugins {
-    id 'java-library'
-    id 'maven-publish'
-    id 'signing'
     id 'org.jetbrains.kotlin.jvm' version '2.3.21'
     id 'org.jetbrains.dokka' version '2.2.0'
     id 'org.jetbrains.dokka-javadoc' version '2.2.0'
+    id 'com.vanniktech.maven.publish' version '0.36.0'
+    id 'signing'
 }
 
 group 'com.github.shiguruikai'
@@ -28,11 +27,6 @@ kotlin {
     jvmToolchain(17)
 }
 
-java {
-    withSourcesJar()
-    withJavadocJar()
-}
-
 jar {
     manifest {
         attributes(
@@ -42,55 +36,41 @@ jar {
     }
 }
 
-tasks.named('javadocJar', Jar) {
-    dependsOn(tasks.dokkaGeneratePublicationJavadoc)
-    from(tasks.named('dokkaGeneratePublicationJavadoc').flatMap { it.outputDirectory })
-}
+mavenPublishing {
+    publishToMavenCentral()
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from components.java
-            pom {
-                name = project.name
-                description = 'A combinatorics library for Kotlin'
-                url = 'https://github.com/shiguruikai/combinatoricskt'
-                licenses {
-                    license {
-                        name = 'MIT License'
-                        url = 'https://github.com/shiguruikai/combinatoricskt/blob/master/LICENSE'
-                        distribution = 'repo'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'shiguruikai'
-                        name = 'Shigurui Kai'
-                        email = 'kai.shigurui@gmail.com'
-                    }
-                }
-                scm {
-                    connection = 'scm:git:https://github.com/shiguruikai/combinatoricskt.git'
-                    developerConnection = 'scm:git:https://github.com/shiguruikai/combinatoricskt.git'
-                    url = 'https://github.com/shiguruikai/combinatoricskt'
-                }
+    signAllPublications()
+
+    coordinates(group.toString(), project.name, version.toString())
+
+    pom {
+        name = project.name
+        description = 'A combinatorics library for Kotlin'
+        inceptionYear = '2018'
+        url = 'https://github.com/shiguruikai/combinatoricskt/'
+        licenses {
+            license {
+                name = 'MIT License'
+                url = 'https://github.com/shiguruikai/combinatoricskt/blob/master/LICENSE'
+                distribution = 'https://github.com/shiguruikai/combinatoricskt/blob/master/LICENSE'
             }
         }
-    }
-    repositories {
-        maven {
-            def releasesRepoUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
-            def snapshotsRepoUrl = 'https://oss.sonatype.org/content/repositories/snapshots'
-            url project.version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
-            credentials {
-                username = sonatypeUsername
-                password = sonatypePassword
+        developers {
+            developer {
+                id = 'shiguruikai'
+                name = 'Shigurui Kai'
+                url = 'https://github.com/shiguruikai/'
+                email = 'kai.shigurui@gmail.com'
             }
+        }
+        scm {
+            url = 'https://github.com/shiguruikai/combinatoricskt/'
+            connection = 'scm:git:git://github.com/shiguruikai/combinatoricskt.git'
+            developerConnection = 'scm:git:ssh://git@github.com/shiguruikai/combinatoricskt.git'
         }
     }
 }
 
 signing {
     useGpgCmd()
-    sign publishing.publications.maven
 }
