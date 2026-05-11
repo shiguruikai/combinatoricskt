@@ -58,7 +58,8 @@ class CombinatorialSequence<out T>(
      */
     fun asStream(): Stream<out T> = if (totalSize <= Long.MAX_VALUE.toBigInteger()) {
         StreamSupport.stream(Spliterators.spliterator(
-                iterator(), totalSize.longValueExact(), Spliterator.ORDERED), false)
+                iterator(), totalSize.longValueExact(),
+                Spliterator.ORDERED or Spliterator.SIZED), false)
     } else {
         StreamSupport.stream(Spliterators.spliteratorUnknownSize(
                 iterator(), Spliterator.ORDERED), false)

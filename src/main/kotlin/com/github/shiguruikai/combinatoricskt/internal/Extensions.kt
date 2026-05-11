@@ -35,31 +35,22 @@ internal operator fun IntArray.times(n: Int): IntArray {
 
 @PublishedApi
 internal inline fun <R> IntArray.mapToList(newSize: Int = size, transform: (Int) -> R): List<R> {
-    val result = ArrayList<R>(newSize)
-    repeat(newSize) {
-        result += transform(this[it])
-    }
-    return result
+    return List(newSize) { i -> transform(this[i]) }
 }
 
 @PublishedApi
 internal inline fun <reified R> IntArray.mapToArray(newSize: Int = size, transform: (Int) -> R): Array<R> {
-    val result = arrayOfNulls<R>(newSize)
-    repeat(newSize) {
-        result[it] = transform(this[it])
-    }
-    @Suppress("UNCHECKED_CAST")
-    return result as Array<R>
+    return Array(newSize) { i -> transform(this[i]) }
+}
+
+@PublishedApi
+internal inline fun <reified R> IntArray.mapIndexedToArray(newSize: Int = size, transform: (Int, Int) -> R): Array<R> {
+    return Array(newSize) { i -> transform(i, this[i]) }
 }
 
 @PublishedApi
 internal inline fun <reified R, T> Array<T>.mapToArray(newSize: Int = size, transform: (T) -> R): Array<R> {
-    val result = arrayOfNulls<R>(newSize)
-    repeat(newSize) {
-        result[it] = transform(this[it])
-    }
-    @Suppress("UNCHECKED_CAST")
-    return result as Array<R>
+    return Array(newSize) { i -> transform(this[i]) }
 }
 
 @Suppress("NOTHING_TO_INLINE")

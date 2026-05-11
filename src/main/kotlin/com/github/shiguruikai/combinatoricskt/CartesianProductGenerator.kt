@@ -7,6 +7,7 @@
 
 package com.github.shiguruikai.combinatoricskt
 
+import com.github.shiguruikai.combinatoricskt.internal.mapIndexedToArray
 import com.github.shiguruikai.combinatoricskt.internal.mapToArray
 import com.github.shiguruikai.combinatoricskt.internal.times
 import java.math.BigInteger
@@ -16,7 +17,8 @@ import java.math.BigInteger
  */
 object CartesianProductGenerator {
 
-    private inline fun <R> build(sizes: IntArray,
+    @PublishedApi
+    internal inline fun <R> build(sizes: IntArray,
                                  repeat: Int,
                                  crossinline transform: (IntArray) -> R): CombinatorialSequence<R> {
         val totalSize = sizes.fold(BigInteger.ONE) { acc, size -> acc * size.toBigInteger() }.pow(repeat)
@@ -133,21 +135,31 @@ object CartesianProductGenerator {
             return CombinatorialSequence(BigInteger.ONE, sequenceOf(emptyArray()))
         }
 
-        var total = BigInteger.ONE
-        val pools = arrays.map {
-            if (it.isEmpty()) {
+        val sizes = IntArray(arrays.size)
+        val pools = Array(arrays.size) { i ->
+            val array = arrays[i]
+            if (array.isEmpty()) {
                 return CombinatorialSequence(BigInteger.ZERO, emptySequence())
             }
-            total *= it.size.toBigInteger()
-            it.copyOf().asSequence()
-        } * repeat
-        total = total.pow(repeat)
-
-        var sequence = sequenceOf(emptyArray<T>())
-        pools.forEach { pool ->
-            sequence = sequence.flatMap { a -> pool.map { b -> a + b } }
+            sizes[i] = array.size
+            array.copyOf()
         }
 
-        return CombinatorialSequence(total, sequence)
+        return if (repeat == 1) {
+            build(sizes, repeat) { indices ->
+                indices.mapIndexedToArray { i, value -> pools[i][value] }
+            }
+        } else {
+            build(sizes, repeat) { indices ->
+                var index = 0
+                indices.mapIndexedToArray { _, it ->
+                    pools[index++][it].also {
+                        if (index >= pools.size) {
+                            index = 0
+                        }
+                    }
+                }
+            }
+        }
     }
 }
